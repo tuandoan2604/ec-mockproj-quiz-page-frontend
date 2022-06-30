@@ -2,8 +2,8 @@
 import React, {useCallback, useState} from "react";
 import styled from 'styled-components/native'
 import LinearGradient from 'react-native-linear-gradient';
-import {Image, StyleSheet, Dimensions, Text, TouchableOpacity, View} from "react-native";
-import {IC_BACK, IC_FB, IC_GG} from "../assets";
+import {Image, StyleSheet, Dimensions, TouchableOpacity, View} from "react-native";
+import {IC_BACK_CIRCLE, IC_FB, IC_GG} from "../assets";
 import {useNavigation} from "@react-navigation/native";
 import CheckBox from '@react-native-community/checkbox';
 
@@ -19,7 +19,7 @@ const SignUpScreen = () => {
         <Container>
             <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
                 <ButtonBack onPress={goBack}>
-                    <Image source={IC_BACK} style={{marginTop: 42, marginLeft: 12}}/>
+                    <Image source={IC_BACK_CIRCLE} style={{marginTop: 42, marginLeft: 12}}/>
                 </ButtonBack>
 
                 <TitleSection>
