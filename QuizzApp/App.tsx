@@ -1,9 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
+// @ts-ignore
 import React from 'react';
 import RootStack from './src/nav/RootStack';
 
 const App = () => {
-  return <RootStack />;
+    return <RootStack/>;
 };
 
 export default App;

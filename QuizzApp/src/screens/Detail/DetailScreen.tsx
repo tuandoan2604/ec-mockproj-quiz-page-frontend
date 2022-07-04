@@ -1,13 +1,20 @@
 import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 // @ts-ignore
-import React from 'react';
+import React, {useCallback} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import HeaderBack from "../../components/HeaderBack";
 import {IC_DOT, IC_QUESTION_DARK, IC_STAR, IC_STAR_DARK, IC_TIME_DARK} from "../../assets";
 import styled from "styled-components/native";
+import {useNavigation} from "@react-navigation/native";
 
 const width = Dimensions.get('window').width
 const DetailScreen = () => {
+
+    const navigation = useNavigation<any>()
+    const goToQuiz = useCallback(() => {
+        navigation.navigate('QuizScreen')
+    }, [])
+
     return (
         <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
             <HeaderBack title={'Detail Quiz'}/>
@@ -86,7 +93,7 @@ const DetailScreen = () => {
                 </ReadingSection>
 
 
-                <Button>
+                <Button onPress={goToQuiz}>
                     <BtnText>Get Started</BtnText>
                 </Button>
 

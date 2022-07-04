@@ -28,7 +28,7 @@ const HeaderBack = (props: Props) => {
             <Center>
             </Center>
             <Right>
-                <Icon source={IC_AVT}/>
+                <Icon source={right ? IC_AVT : ''}/>
             </Right>
         </Container>
     )

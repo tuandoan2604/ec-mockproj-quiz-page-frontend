@@ -1,10 +1,6 @@
 // @ts-ignore
 import React, {useState} from 'react';
-import {
-    StyleSheet,
-    TouchableWithoutFeedback,
-    Keyboard,
-} from 'react-native';
+import {StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
 import HomeHeader from '../../components/HomeHeader';
@@ -12,36 +8,36 @@ import {IC_SEARCH} from '../../assets';
 import TopTab from '../../nav/TopTab';
 
 const HomeScreen = () => {
-    const [searchText, setSearchText] = useState('');
-    return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
-                <HomeHeader/>
+  const [searchText, setSearchText] = useState('');
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
+        <HomeHeader />
 
-                <WelcomeSection>
-                    <HelloText>Hello, Hiep</HelloText>
-                    <WelcomeText>Let's test your knowledge</WelcomeText>
-                </WelcomeSection>
-                <SearchSection>
-                    <SearchIcon source={IC_SEARCH}/>
-                    <SearchInput
-                        placeholder={'Search'}
-                        onChangeText={text => setSearchText(text)}
-                        value={searchText}
-                    />
-                </SearchSection>
-                <TopTab/>
-            </LinearGradient>
-        </TouchableWithoutFeedback>
-    );
+        <WelcomeSection>
+          <HelloText>Hello, Hiep</HelloText>
+          <WelcomeText>Let's test your knowledge</WelcomeText>
+        </WelcomeSection>
+        <SearchSection>
+          <SearchIcon source={IC_SEARCH} />
+          <SearchInput
+            placeholder={'Search'}
+            onChangeText={text => setSearchText(text)}
+            value={searchText}
+          />
+        </SearchSection>
+        <TopTab />
+      </LinearGradient>
+    </TouchableWithoutFeedback>
+  );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-    background: {
-        flex: 1,
-    },
+  background: {
+    flex: 1,
+  },
 });
 
 const SearchSection = styled.View`

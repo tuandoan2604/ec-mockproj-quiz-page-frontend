@@ -11,47 +11,45 @@ import styled from 'styled-components/native';
 const Tab = createMaterialTopTabNavigator();
 
 const TopTab = () => {
-    return (
-        <Tab.Navigator
-            style={{borderTopLeftRadius: 32, borderTopRightRadius: 32}}
-            screenOptions={{
-                tabBarInactiveTintColor: '#FFDAAE',
-                tabBarActiveTintColor: '#fff',
-                tabBarShowLabel: true,
-                tabBarLabelStyle: {
-                    color: '#FFF',
-                },
-            }}>
-            <Tab.Screen
-                name={'Popular'}
-                component={PopularScreen}
-                options={{
-                    title: () => <Title>Popular</Title>,
-                }}
-            />
-            <Tab.Screen
-                name={'Mathematics'}
-                component={MathematicsScreen}
-                options={{
-                    title: () => <Title>Mathematic</Title>,
-                }}
-            />
-            <Tab.Screen
-                name={'Science'}
-                component={ScienceScreen}
-                options={{
-                    title: () => <Title>Science</Title>,
-                }}
-            />
-            <Tab.Screen
-                name={'Computer'}
-                component={ComputerScreen}
-                options={{
-                    title: () => <Title>Computer</Title>,
-                }}
-            />
-        </Tab.Navigator>
-    );
+  return (
+    <Tab.Navigator
+      style={{borderTopLeftRadius: 32, borderTopRightRadius: 32}}
+      screenOptions={{
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          color: '#FFF',
+        },
+      }}>
+      <Tab.Screen
+        name={'Popular'}
+        component={PopularScreen}
+        options={{
+          title: () => <Title>Popular</Title>,
+        }}
+      />
+      <Tab.Screen
+        name={'Mathematics'}
+        component={MathematicsScreen}
+        options={{
+          title: () => <Title>Mathematic</Title>,
+        }}
+      />
+      <Tab.Screen
+        name={'Science'}
+        component={ScienceScreen}
+        options={{
+          title: () => <Title>Science</Title>,
+        }}
+      />
+      <Tab.Screen
+        name={'Computer'}
+        component={ComputerScreen}
+        options={{
+          title: () => <Title>Computer</Title>,
+        }}
+      />
+    </Tab.Navigator>
+  );
 };
 
 export default TopTab;
