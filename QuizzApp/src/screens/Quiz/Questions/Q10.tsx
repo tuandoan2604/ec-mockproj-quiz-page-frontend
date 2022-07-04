@@ -18,8 +18,8 @@ const Q10 = () => {
     setIsTrue(!isTrue);
   }, [isTrue]);
 
-  const goBack = useCallback(() => {
-    navigation.goBack();
+  const goToResult = useCallback(() => {
+    navigation.navigate('ResultScreen');
   }, []);
 
   return (
@@ -101,31 +101,15 @@ const Q10 = () => {
         </AnswerText>
       </AnswerSection>
 
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          marginHorizontal: 24,
-          alignItems: 'center',
-          flex: 1,
-        }}>
-        <TouchableOpacity onPress={goBack}>
+      <Footer>
+        <TouchableOpacity>
           <Image source={IC_PREVIOUS_COLOR} />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={{
-            width: 195,
-            height: 50,
-            borderColor: '#3550DC',
-            borderWidth: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius: 5,
-          }}>
+        <ButtonSubmit onPress={goToResult}>
           <Text>Submit Quiz</Text>
-        </TouchableOpacity>
+        </ButtonSubmit>
         <Image source={IC_NEXT} />
-      </View>
+      </Footer>
     </Container>
   );
 };
@@ -171,4 +155,22 @@ const AnswerText = styled.Text`
   font-size: 14px;
   line-height: 16px;
   font-weight: 400;
+`;
+
+const Footer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 0 24px;
+  align-items: center;
+  flex: 1;
+`;
+
+const ButtonSubmit = styled.TouchableOpacity`
+  width: 195px;
+  height: 50px;
+  border-color: #3550dc;
+  border-width: 1px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
 `;
