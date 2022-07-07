@@ -1,0 +1,19 @@
+.header{
+    width: 100%;
+}
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+.navbar li{
+    float: left;
+    margin: 30px 40px 0;
+    font-size: 20px;
+}
+.navbar li img {
+    margin-right: 10px;
+}
+.navbar li button:hover{
+    text-decoration: underline;
+}
