@@ -3,18 +3,17 @@ import {StyleSheet} from 'react-native';
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {NavigationContainer} from '@react-navigation/native';
-import LoginScreen from '../screens/LoginScreen';
 import SignInScreen from '../screens/SignInScreen';
 import SignUpScreen from '../screens/SignUpScreen';
 import HomeScreen from '../screens/Home/HomeScreen';
 import TopTab from './TopTab';
 import DetailScreen from '../screens/Detail/DetailScreen';
 import QuizScreen from '../screens/Quiz/QuizScreen';
-import Q9 from '../screens/Quiz/Questions/Q9';
 import ResultScreen from '../screens/Result/ResultScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
 
 export type RootStackParamsList = {
-  LoginScreen: undefined;
+  WelcomeScreen: undefined;
   SignInScreen: undefined;
   SignUpScreen: undefined;
   HomeScreen: undefined;
@@ -31,8 +30,8 @@ const RootStack = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen
-          name="LoginScreen"
-          component={LoginScreen}
+          name="WelcomeScreen"
+          component={WelcomeScreen}
           options={{headerShown: false}}
         />
         <Stack.Screen

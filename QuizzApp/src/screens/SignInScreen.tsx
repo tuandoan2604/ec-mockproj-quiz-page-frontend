@@ -1,93 +1,153 @@
 // @ts-ignore
-import React, {useCallback} from "react";
-import styled from 'styled-components/native'
+import React, {useCallback, useState} from 'react';
+import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {Image, StyleSheet, Dimensions} from "react-native";
-import {IC_BACK_CIRCLE, IC_FB, IC_GG} from "../assets";
-import {useNavigation} from "@react-navigation/native";
+import {
+  Image,
+  StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from 'react-native';
+import {IC_BACK_CIRCLE, IC_FB, IC_GG} from '../assets';
+import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import {url} from '../config/api';
+import {useDispatch} from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {fetchAsyncLogin} from '../store/slices/AuthSlice';
 
-const width = Dimensions.get('window').width
+const width = Dimensions.get('window').width;
 
 const SignInScreen = () => {
-    const navigation = useNavigation<any>()
-    const goBack = useCallback(() => {
-        navigation.goBack()
-    }, [])
-    return (
-        <Container>
-            <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
-                <ButtonBack onPress={goBack}>
-                    <Image source={IC_BACK_CIRCLE} style={{marginTop: 42, marginLeft: 12}}/>
-                </ButtonBack>
+  const dispatch = useDispatch();
+  const [accessToken, setAccessToken] = useState('');
+  const [data, setData] = useState({
+    username: '',
+    password: '',
+  });
 
-                <TitleSection>
-                    <Title>Welcome Back</Title>
-                </TitleSection>
+  const handleLogin = useCallback(() => {
+    return dispatch(fetchAsyncLogin(data)).then(response => {
+      if (!response.error) {
+        navigation.navigate('HomeScreen'); //Add the page name in quote
+      }
+    });
+  }, [data]);
 
-                <ButtonSection>
-                    <ButtonFB>
-                        <Image source={IC_FB}/>
-                        <ButtonText>CONTINUE WITH FACEBOOK</ButtonText>
-                    </ButtonFB>
-                    <ButtonGG>
-                        <Image source={IC_GG}/>
-                        <ButtonText>CONTINUE WITH GOOGLE</ButtonText>
-                    </ButtonGG>
-                    <TextLoginOther>OR LOGIN WITH EMAIL</TextLoginOther>
-                </ButtonSection>
+  const keyboardVerticalOffset = Platform.OS === 'ios' ? 20 : 0;
 
-                <InputSection>
-                    <InputEmail placeholder={'Email'}/>
-                    <InputPassword placeholder={'Password'}/>
-                </InputSection>
+  const navigation = useNavigation<any>();
 
-                <ButtonLogin>
-                    <ButtonLoginText>LOG IN</ButtonLoginText>
-                </ButtonLogin>
+  const goBack = useCallback(() => {
+    navigation.goBack();
+  }, []);
 
-                <ButtonForgotPW>
-                    <TextForgotPW>Forgot Password?</TextForgotPW>
-                </ButtonForgotPW>
+  const onChangeUsername = useCallback(
+    val => {
+      setData({...data, username: val});
+    },
+    [data],
+  );
 
-                <RemainingView>
-                    <TextNotLogin>DON’T HAVE AN ACCOUNT? </TextNotLogin>
-                    <TextRegister>SIGN UP</TextRegister>
-                </RemainingView>
+  const onChangePassword = useCallback(
+    val => {
+      setData({...data, password: val});
+    },
+    [data],
+  );
 
-            </LinearGradient>
-        </Container>
-    )
-}
+  return (
+    <KeyboardAvoidingView
+      keyboardVerticalOffset={keyboardVerticalOffset}
+      style={{flex: 1}}>
+      <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
+        <ButtonBack onPress={goBack}>
+          <Image
+            source={IC_BACK_CIRCLE}
+            style={{marginTop: 42, marginLeft: 12}}
+          />
+        </ButtonBack>
 
-export default SignInScreen
+        <TitleSection>
+          <Title>Welcome Back</Title>
+        </TitleSection>
+
+        <ButtonSection>
+          <ButtonFB>
+            <Image source={IC_FB} />
+            <ButtonText>CONTINUE WITH FACEBOOK</ButtonText>
+          </ButtonFB>
+          <ButtonGG>
+            <Image source={IC_GG} />
+            <ButtonText>CONTINUE WITH GOOGLE</ButtonText>
+          </ButtonGG>
+          <TextLoginOther>OR LOGIN WITH EMAIL</TextLoginOther>
+        </ButtonSection>
+
+        <InputSection>
+          <InputEmail
+            placeholder={'Email'}
+            value={data.username}
+            onChangeText={onChangeUsername}
+          />
+          <InputPassword
+            placeholder={'Password'}
+            value={data.password}
+            onChangeText={onChangePassword}
+          />
+        </InputSection>
+
+        <ButtonLogin onPress={handleLogin}>
+          <ButtonLoginText>LOG IN</ButtonLoginText>
+        </ButtonLogin>
+
+        <ButtonForgotPW>
+          <TextForgotPW>Forgot Password?</TextForgotPW>
+        </ButtonForgotPW>
+
+        <RemainingView>
+          <TextNotLogin>DON’T HAVE AN ACCOUNT? </TextNotLogin>
+          <TextRegister>SIGN UP</TextRegister>
+        </RemainingView>
+      </LinearGradient>
+    </KeyboardAvoidingView>
+  );
+};
+
+export default SignInScreen;
 
 const styles = StyleSheet.create({
-    background: {
-        flex: 1
-    }
-})
+  background: {
+    flex: 1,
+  },
+});
 
 const Container = styled.View`
-  flex: 1`
-const ButtonBack = styled.TouchableOpacity`
-`
+  flex: 1;
+`;
+
+const ButtonBack = styled.TouchableOpacity``;
 
 const TitleSection = styled.View`
   justify-content: center;
-  align-items: center`
+  align-items: center;
+`;
 
 const Title = styled.Text`
   font-weight: 400;
   font-size: 28px;
   line-height: 38px;
-  color: #FFFFFF;
-`
+  color: #ffffff;
+`;
 const ButtonSection = styled.View`
   justify-content: center;
-  align-items: center`
+  align-items: center;
+`;
 
 const ButtonFB = styled(ButtonBack)`
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.01);
   box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 38px;
@@ -97,9 +157,8 @@ const ButtonFB = styled(ButtonBack)`
   align-items: center;
   margin-top: 30px;
   justify-content: space-evenly;
-
-`
-const ButtonGG = styled(ButtonFB)``
+`;
+const ButtonGG = styled(ButtonFB)``;
 
 const ButtonText = styled.Text`
   font-weight: 400;
@@ -107,20 +166,22 @@ const ButtonText = styled.Text`
   line-height: 15px;
   letter-spacing: 0.05px;
   color: #000000;
-`
+`;
 
 const TextLoginOther = styled.Text`
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
   letter-spacing: 0.05px;
-  color: #FFFFFF;
-  margin-top: 30px`
+  color: #ffffff;
+  margin-top: 30px;
+`;
 
 const InputSection = styled.View`
   justify-content: center;
   align-items: center;
-  margin-top: 60px`
+  margin-top: 60px;
+`;
 
 const InputEmail = styled.TextInput`
   width: 360px;
@@ -129,38 +190,44 @@ const InputEmail = styled.TextInput`
   border-radius: 38px;
   flex: auto;
   margin-top: 30px;
-`
+  padding: 10px;
+`;
 
-const InputPassword = styled(InputEmail)``
+const InputPassword = styled(InputEmail)``;
 
 const ButtonLogin = styled(ButtonFB)`
   justify-content: center;
   align-self: center;
-  height: 50px`
+  height: 50px;
+`;
 
-const ButtonLoginText = styled(ButtonText)``
+const ButtonLoginText = styled(ButtonText)``;
 
 const ButtonForgotPW = styled(ButtonBack)`
   justify-content: center;
   align-self: center;
-  margin-top: 30px`
+  margin-top: 30px;
+`;
 
 const TextForgotPW = styled(ButtonText)`
-  color: white`
+  color: white;
+`;
 
 const RemainingView = styled(ButtonBack)`
   flex-direction: row;
   margin-top: 60px;
   justify-content: center;
   align-items: center;
-`
+`;
 
 const TextNotLogin = styled.Text`
   font-weight: 400;
   font-size: 14px;
   line-height: 15px;
   letter-spacing: 0.05px;
-  color: #FFFFFF;`
+  color: #ffffff;
+`;
 
 const TextRegister = styled(TextNotLogin)`
-  color: black`
+  color: black;
+`;

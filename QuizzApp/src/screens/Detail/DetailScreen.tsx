@@ -23,16 +23,19 @@ const DetailScreen = () => {
   return (
     <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
       <HeaderBack title={'Detail Quiz'} />
+
       <HeaderSection>
         <View>
           <HeaderTitle>UI UX Design Quiz</HeaderTitle>
           <Target>Get 100 points</Target>
         </View>
+
         <RatingSection>
           <IconStar source={IC_STAR} />
           <RatingNumber>4.8</RatingNumber>
         </RatingSection>
       </HeaderSection>
+
       <MainSection>
         <BriefText>Brief explanation about this quiz</BriefText>
         <WrapItem>
@@ -42,6 +45,7 @@ const DetailScreen = () => {
             <DescriptionText>10 point for a correct answer</DescriptionText>
           </View>
         </WrapItem>
+
         <WrapItem>
           <IconDark source={IC_TIME_DARK} />
           <View>
@@ -49,6 +53,7 @@ const DetailScreen = () => {
             <DescriptionText>Total duration of the quiz</DescriptionText>
           </View>
         </WrapItem>
+
         <WrapItem>
           <IconDark source={IC_STAR_DARK} />
           <View>
@@ -69,18 +74,21 @@ const DetailScreen = () => {
               answer
             </ReadingText>
           </ItemReading>
+
           <ItemReading>
             <IconDot source={IC_DOT} />
             <ReadingText>
               Tap on options to select the correct answer
             </ReadingText>
           </ItemReading>
+
           <ItemReading>
             <IconDot source={IC_DOT} />
             <ReadingText>
               Tap on the bookmark icon to save interesting questions
             </ReadingText>
           </ItemReading>
+
           <ItemReading>
             <IconDot source={IC_DOT} />
             <ReadingText>

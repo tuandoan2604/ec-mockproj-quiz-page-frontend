@@ -6,9 +6,14 @@ import LinearGradient from 'react-native-linear-gradient';
 import HomeHeader from '../../components/HomeHeader';
 import {IC_SEARCH} from '../../assets';
 import TopTab from '../../nav/TopTab';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState('');
+
+  // const token = useSelector(state => state.AuthSlice.tokens);
+  // console.log('token', token);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
@@ -18,6 +23,7 @@ const HomeScreen = () => {
           <HelloText>Hello, Hiep</HelloText>
           <WelcomeText>Let's test your knowledge</WelcomeText>
         </WelcomeSection>
+
         <SearchSection>
           <SearchIcon source={IC_SEARCH} />
           <SearchInput
