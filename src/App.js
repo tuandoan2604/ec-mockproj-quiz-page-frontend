@@ -14,10 +14,9 @@ import HeaderComponent from "./component/header";
 
 function App() {
     let user = useSelector(selectUser)
-
     return (
         <>
-            {user && <HeaderComponent user={user.user.user}/>}
+            {user && <HeaderComponent user={user}/>}
         <div className="container">
                 <Routes>
                     <Route index element={<OnboardPage/>}></Route>

@@ -1,53 +1,91 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import request from "../../utils/auth";
 import "./question.css"
-import {useSelector} from "react-redux";
-import {selectUser} from "../../features/userSlice";
+import {useDispatch, useSelector} from "react-redux";
+import {logout, refresh, selectTokens, selectUser} from "../../features/userSlice";
+import {Tabs, Tab, TabPanel, TabList} from "react-tabs";
+import {getQuestion, selectQuestion} from "../../features/quizzSlice";
+import {useNavigate} from "react-router-dom";
+import {modifyAnswer, selectAnswer} from "../../features/answerSlice";
 
 function QuestComponent () {
-    let user = useSelector(selectUser)
-    const [questions, setQuestion] = useState([])
-    const [answer, setAnswer] = useState("")
-    const [score, setScore] = useState(0)
-
+    const [tabIndex, setTabIndex] = useState(0)
+    const tokens = useSelector(selectTokens);
+    const questions = useSelector(selectQuestion)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const answer = useSelector(selectAnswer)
     useLayoutEffect(() => {
         request
-            .get('questions', {
-                params: {
-                    page: 1,
-                    limit: 4
-                },
-                headers: {
-                    Authorization: `Bearer ${user.user.tokens.access.token}`
+        .get('questions', {
+            params: {
+                page: 1,
+                limit: 10
+            },
+            headers: {
+                Authorization: `Bearer ${tokens.access.token}`
+            }
+        })
+        .then(res => {
+            dispatch(
+                getQuestion( res.data.results))
+        })
+            .catch( () => {
+                dispatch(logout())
+                navigate('/', {replace: true})
                 }
-            })
-            .then((res) => {
-                // setQuestion(res.data.results)
-                console.log(res.data.results)
-            })
-    },[questions])
-    const handleClick = (e) =>{
-        setAnswer(e.target.textContent)
+            )
+    },[])
+
+    function handleAnsClick (props, e) {
+        dispatch(modifyAnswer({
+            id: props.id,
+            answer: e.target.textContent
+        }))
     }
-    // useEffect(()=>{
-    //     if(answer==="A"){
-    //         setScore(score+1)
-    //     }
-    //     else if(answer==="B"){
-    //         setScore(score+2)
-    //     }
-    //     setAnswer("")
-    // },[answer])
+
+    function handleSubmit () {
+        // request
+        //     .post()
+
+    }
+    console.log(answer)
     return(
-        <div className="section">
-            {/*<h1 className="question">{questions[0].question}</h1>*/}
-            {/*<ul className="answer-list">*/}
-            {/*    <li className="answer" onClick={handleClick}>{questions[0].answer1}</li>*/}
-            {/*    <li className="answer" onClick={handleClick}>{questions[0].answer2}</li>*/}
-            {/*    <li className="answer" onClick={handleClick}>{questions[0].answer3}</li>*/}
-            {/*    <li className="answer" onClick={handleClick}>{questions[0].answer4}</li>*/}
-            {/*</ul>*/}
-            <h2 className="score">Your score {score}</h2>
+        <div className="quizz-container">
+            <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
+                <TabList className="quizz-nav">
+                    {questions.map((question,index) =>
+                        <Tab className="quizz-id">
+                            {index+1}
+                        </Tab>)}
+                </TabList>
+                {questions.map(question =>
+                    <TabPanel className="quizz-panel">
+                        <h1>{question.question}</h1>
+                        <button className="answer-btn" onClick={(e) => {
+                            handleAnsClick(question,e)
+                            if(tabIndex<9) setTabIndex(tabIndex+1)
+                        }}> {question.answer1}</button>
+                        <button className="answer-btn" onClick={(e) => {
+                            handleAnsClick(question,e)
+                            if(tabIndex<9) setTabIndex(tabIndex+1)
+                            }}> {question.answer2}</button>
+                    <button className="answer-btn" onClick={(e) => {
+                            handleAnsClick(question,e)
+                            if(tabIndex<9) setTabIndex(tabIndex+1)
+                        }}> {question.answer3}</button>
+                    <button className="answer-btn" onClick={(e) => {
+                            handleAnsClick(question,e)
+                            if(tabIndex<9) setTabIndex(tabIndex+1)
+                        }}> {question.answer4}</button>
+                        </TabPanel>)}
+            </Tabs>
+            <div className="tab-nav-btn">
+                {(tabIndex>0) && <button id="prev" onClick={() => {if(tabIndex>0) setTabIndex(tabIndex-1)}}>Prev</button>}
+                {(tabIndex<9) && <button id="next" onClick={() => {if(tabIndex<9) setTabIndex(tabIndex+1)}}>Next</button>}
+                {(tabIndex == 9) && <button id="submit" onClick={() => {}}>Submit</button>}
+
+            </div>
         </div>
     )
 }

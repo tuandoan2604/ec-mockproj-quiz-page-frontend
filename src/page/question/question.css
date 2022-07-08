@@ -1,38 +1,78 @@
-.section{
+.quizz-container{
+    width: 100%;
+    max-width: 800px;
+    height: 800px;
     display: flex;
     flex-direction: column;
-    align-content: center;
-    justify-content: center;
-    width: 80%;
-    max-width: 500px;
-    padding: 50px 0 ;
-    border-radius: 20px;
+    justify-content: space-evenly;
+    background-color: white;
+    padding: 50px 30px;
+    border-radius: 50px;
+    position: relative;
+}
+.quizz-nav{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+}
+.quizz-id{
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    color: white;
+    background-color: lightgray;
+    text-align: center;
+    font-size: 25px;
+}
+
+.quizz-panel{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.quizz-panel h1{
+    color: black;
+    font-size: 35px;
+}
+.answer-btn{
+    background-color: lightgray;
+    width: 90%;
+    padding: 25px;
+    margin: 15px 0;
+    font-size: 20px;
+    text-align: left;
+    border-radius: 50px;
+}
+
+.answer-btn:focus{
+    color: white;
     background: linear-gradient(to right,#5335DC, #27E9F7);
 }
 
-.answer-list{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+.tab-nav-btn{
+    position: absolute;
+    bottom: 70px;
+    width: 100%;
 }
-.answer{
-    cursor: pointer;
-    flex-basis: 45%;
-    margin: 10px 0;
+.tab-nav-btn button{
     padding: 10px 20px;
-    color: white;
-    background-color: #D4D4D4;
     border-radius: 20px;
-    font-weight: 500;
+    font-size: 16px;
+    background: lightgray;
 }
-.answer:hover{
-    background:linear-gradient(to right,#5335DC, #27E9F7) ;
+#prev{
+    position: absolute;
+    left: 0;
+}
+#next{
+    position: absolute;
+    right: 65px;
+}
+#submit{
+    position: absolute;
+    right: 65px;
+    background-color: red;
     color: white;
 }
-.score{
-    text-align: center;
-    color: white;
-    font-size: 20px;
-    margin-top: 40px;
-}
-

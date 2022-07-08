@@ -3,18 +3,17 @@ import {Formik,Form, Field, ErrorMessage} from "formik";
 import "./login.css"
 import request from "../../../utils/auth";
 import {useDispatch, useSelector} from "react-redux";
-import {login, selectUser} from "../../../features/userSlice";
+import {login, selectUser, selectTokens, refresh} from "../../../features/userSlice";
 import {Link, useNavigate} from "react-router-dom";
 
 function LoginForm () {
 
-    let user=useSelector(selectUser)
+    let user = useSelector(selectUser)
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [error, setError] = useState()
     function onSubmit (values) {
-        console.log(values)
         request
             .post(`auth/login`,{
                     username: values.username,
@@ -22,11 +21,13 @@ function LoginForm () {
             })
 
             .then( (res) => {
-                console.log(res.data)
-                    dispatch(login({
-                        user: res.data,
-                        loggedIn: true,
-                }))
+                    dispatch(
+                        login({
+                        user: res.data.user
+                        }))
+                    dispatch(refresh({
+                            tokens: res.data.tokens
+                        }))
                 navigate("/profile")
             })
             .catch((res) => {
@@ -34,12 +35,6 @@ function LoginForm () {
                     setError('*Incorrect username or password')
             })
         }
-        // dispatch(login({
-        //         email: values.email,
-        //         password: values.password,
-        //         loggedIn: true,
-        //     }))
-
     function validateUsername (value) {
         let error;
         if (!value) {
