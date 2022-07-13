@@ -21,7 +21,6 @@ const authSlice = createSlice({
   name: 'Auth',
   initialState: {
     payload: [],
-    data: [],
     isLogin: false,
   },
 
@@ -31,6 +30,7 @@ const authSlice = createSlice({
       return {
         ...state,
         isLogin: false,
+        payload: [],
       };
     },
   },
@@ -41,9 +41,7 @@ const authSlice = createSlice({
         const payload = action.payload;
         const {tokens} = action.payload.tokens.access.token;
         console.log('tokens', action.payload.tokens.access.token);
-
-        AsyncStorage.setItem('tokens', tokens);
-
+        AsyncStorage.setItem('token', tokens);
         return {
           ...state,
           payload: payload,

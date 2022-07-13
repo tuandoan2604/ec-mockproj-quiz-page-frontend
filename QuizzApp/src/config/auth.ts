@@ -15,16 +15,6 @@ const AuthService = {
       email,
     });
   },
-
-  list({page = 1, limit = 4, ...restParams} = {}) {
-    return api.call().get(`/v1/questions?page=1&limit=4`, {
-      params: {
-        page,
-        limit,
-        ...restParams,
-      },
-    });
-  },
 };
 
 export default AuthService;

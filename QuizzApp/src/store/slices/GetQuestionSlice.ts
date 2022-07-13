@@ -1,28 +1,38 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
-export const fetchSlider = createAsyncThunk(
-  'slider/fetchSlider',
+import QuestionService from '../../config/question';
+
+export const fetchAsyncQuestionData = createAsyncThunk(
+  'auth/fetchAsyncQuestionData',
   async (data: any, thunkAPI) => {
-    console.log('fetchSlider');
+    const response = await QuestionService.list(data);
+    console.log('response data');
+    return response.data;
   },
 );
 
-const categorySlice = createSlice({
-  name: 'Slider',
+const getQuestionSlice = createSlice({
+  name: 'Question',
   initialState: {
-    items: [],
+    question: null,
   },
-  reducers: {},
+  reducers: {
+    addQuestion(state, action) {
+      state.question = action.payload;
+    },
+  },
 
   extraReducers: builder => {
     builder
-      .addCase(fetchSlider.fulfilled, (state, action) => {
-        state.items = action.payload;
+      .addCase(fetchAsyncQuestionData.fulfilled, (state, action) => {
+        console.log('test question');
       })
-      .addCase(fetchSlider.rejected, (state, action) => {
+      .addCase(fetchAsyncQuestionData.rejected, (state, action) => {
         console.log(action.error.message);
       });
   },
 });
 
-export const {} = categorySlice.actions;
-export default categorySlice.reducer;
+const {actions, reducer} = getQuestionSlice;
+
+export const {addQuestion} = actions;
+export default reducer;

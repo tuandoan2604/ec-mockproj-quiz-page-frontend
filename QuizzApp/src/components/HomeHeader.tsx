@@ -4,35 +4,33 @@ import React, {memo, ReactElement, useCallback} from 'react';
 import styled from 'styled-components/native';
 import {getStatusBarHeight} from 'react-native-status-bar-height';
 import {useNavigation} from '@react-navigation/native';
-import {IC_AVT, IC_MENU} from "../assets";
+import {IC_AVT, IC_MENU} from '../assets';
+import {useSelector} from 'react-redux';
 
 interface Props {
-    title?: string;
-    right?: ReactElement;
-    left?: ReactElement
+  title?: string;
+  right?: ReactElement;
+  left?: ReactElement;
 }
 
 export const HeaderBack = memo(function HeaderBack(props: Props) {
-    const {title, right, left} = props;
-    const navigation = useNavigation<any>();
+  const {title, right, left} = props;
+  // @ts-ignore
+  const payload = useSelector(state => state.Auth.payload);
 
-    const goBack = useCallback(() => {
-        navigation.goBack();
-    }, []);
-
-    return (
-        <Container>
-            <Left>
-                <Icon source={IC_MENU}/>
-            </Left>
-            <Center>
-                <BannerText>{title}</BannerText>
-            </Center>
-            <Right>
-                <Icon source={IC_AVT}/>
-            </Right>
-        </Container>
-    );
+  return (
+    <Container>
+      <Left>
+        <Icon source={IC_MENU} />
+      </Left>
+      <Center>
+        <BannerText>{title}</BannerText>
+      </Center>
+      <Right>
+        <Avatar source={{uri: payload.user.avatar}} />
+      </Right>
+    </Container>
+  );
 });
 
 export default HeaderBack;
@@ -68,11 +66,15 @@ const Right = styled.View`
   padding-right: 24px;
 `;
 
-const Icon = styled.Image`
-`;
+const Icon = styled.Image``;
 
 const BannerText = styled.Text`
   font-size: 20px;
   color: #fff;
   font-weight: 600;
+`;
+
+const Avatar = styled.Image`
+  width: 40px;
+  height: 40px;
 `;

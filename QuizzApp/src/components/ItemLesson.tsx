@@ -40,7 +40,7 @@ export default ItemLesson;
 
 const styles = StyleSheet.create({});
 
-const LessonSection = styled.TouchableOpacity`
+const LessonSection = styled.View`
   align-items: center;
 `;
 

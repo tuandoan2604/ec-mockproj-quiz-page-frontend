@@ -1,10 +1,13 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import {StyleSheet} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import styled from 'styled-components/native';
+import {useDispatch} from 'react-redux';
+import {fetchAsyncQuestionData} from '../../../store/slices/GetQuestionSlice';
 
 const Q1 = () => {
   const [isFalse, setIsFalse] = useState(true);
   const [isTrue, setIsTrue] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const changeStyleFalse = useCallback(() => {
     setIsFalse(!isFalse);

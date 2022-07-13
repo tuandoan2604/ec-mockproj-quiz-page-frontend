@@ -6,13 +6,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import HomeHeader from '../../components/HomeHeader';
 import {IC_SEARCH} from '../../assets';
 import TopTab from '../../nav/TopTab';
-import {useSelector} from 'react-redux';
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState('');
 
-  // const token = useSelector(state => state.AuthSlice.tokens);
-  // console.log('token', token);
+  //  const token = useSelector(state => state.Auth.payload.tokens.access.token);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

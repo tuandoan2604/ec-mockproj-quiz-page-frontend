@@ -12,17 +12,13 @@ import {
 } from 'react-native';
 import {IC_BACK_CIRCLE, IC_FB, IC_GG} from '../assets';
 import {useNavigation} from '@react-navigation/native';
-import axios from 'axios';
-import {url} from '../config/api';
 import {useDispatch} from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {fetchAsyncLogin} from '../store/slices/AuthSlice';
 
 const width = Dimensions.get('window').width;
 
 const SignInScreen = () => {
   const dispatch = useDispatch();
-  const [accessToken, setAccessToken] = useState('');
   const [data, setData] = useState({
     username: '',
     password: '',
@@ -31,7 +27,7 @@ const SignInScreen = () => {
   const handleLogin = useCallback(() => {
     return dispatch(fetchAsyncLogin(data)).then(response => {
       if (!response.error) {
-        navigation.navigate('HomeScreen'); //Add the page name in quote
+        navigation.navigate('HomeScreen');
       }
     });
   }, [data]);

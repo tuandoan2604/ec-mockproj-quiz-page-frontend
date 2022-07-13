@@ -1,26 +1,14 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Q1 from './Q1';
 import Q2 from './Q2';
 import Q3 from './Q3';
 import Q4 from './Q4';
-import Q5 from './Q5';
-import Q6 from './Q6';
-import Q7 from './Q7';
-import Q8 from './Q8';
-import Q9 from './Q9';
-import Q10 from './Q10';
 
 const Tab = createMaterialTopTabNavigator();
 
 const QuestionsTopTab = () => {
-  const [isActive, setIsActive] = useState(Boolean);
-
-  const changeStyle = useCallback(() => {
-    setIsActive(!isActive);
-  }, [isActive]);
-
   return (
     <Tab.Navigator
       style={{
@@ -59,49 +47,6 @@ const QuestionsTopTab = () => {
         component={Q4}
         options={{
           title: () => <Text>4</Text>,
-        }}
-      />
-      <Tab.Screen
-        name={'5'}
-        component={Q5}
-        options={{
-          title: () => <Text>5</Text>,
-        }}
-      />
-      <Tab.Screen
-        name={'6'}
-        component={Q6}
-        options={{
-          title: () => <Text>6</Text>,
-        }}
-      />
-      <Tab.Screen
-        name={'7'}
-        component={Q7}
-        options={{
-          title: () => <Text>7</Text>,
-        }}
-      />
-
-      <Tab.Screen
-        name={'8'}
-        component={Q8}
-        options={{
-          title: () => <Text>8</Text>,
-        }}
-      />
-      <Tab.Screen
-        name={'9'}
-        component={Q9}
-        options={{
-          title: () => <Text>9</Text>,
-        }}
-      />
-      <Tab.Screen
-        name={'10'}
-        component={Q10}
-        options={{
-          title: () => <Text>10</Text>,
         }}
       />
     </Tab.Navigator>
