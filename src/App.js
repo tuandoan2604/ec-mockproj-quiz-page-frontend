@@ -1,23 +1,23 @@
-import React, {useEffect, useLayoutEffect} from 'react';
 import './App.css';
 import LoginForm from './page/user/login'
-import {Routes} from "react-router-dom"
-import {Route} from "react-router-dom";
+import {Routes, Route, useNavigate, Redirect} from "react-router-dom"
 import RegisterForm from "./page/user/register";
 import StatusComponent from "./component/status";
 import QuestComponent from "./page/question";
-import {useDispatch, useSelector} from "react-redux";
-import {logout, selectUser} from "./features/userSlice";
+import  {useSelector} from "react-redux";
+import {selectUser} from "./reducers/user";
 import OnboardPage from "./page/onboard";
 import ProfilePage from "./page/user/profile";
 import HeaderComponent from "./component/header";
-
+import ResultPage from "./page/result";
+import ReviewPage from "./page/result/review";
 function App() {
-    let user = useSelector(selectUser)
+    const user = useSelector(selectUser)
+
     return (
         <>
             {user && <HeaderComponent user={user}/>}
-        <div className="container">
+             <div className="container">
                 <Routes>
                     <Route index element={<OnboardPage/>}></Route>
                     <Route path="/question" element={<QuestComponent/>}/>
@@ -25,9 +25,11 @@ function App() {
                     <Route path="/login" element={<LoginForm/>}/>
                     <Route path="/status" element={<StatusComponent/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
+                    <Route path="/question/result" element={<ResultPage/>}/>
+                    <Route path="/question/result/review" element={<ReviewPage/>}/>
                 </Routes>
         </div>
-            </>
+        </>
     )
 }
 

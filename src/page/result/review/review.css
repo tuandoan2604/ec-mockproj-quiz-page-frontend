@@ -1,0 +1,42 @@
+.review-container{
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: white;
+    padding: 50px 30px;
+    border-radius: 50px;
+    position: relative;
+}
+.review-container h1{
+    color: black;
+}
+.review-table{
+    border: 1px solid lightgray;
+    margin: 20px 30px;
+}
+.review-table tr{
+    border: 1px solid lightgray;
+    margin: 20px 30px;
+}
+.review-th{
+    font-size: 20px;
+    border: 1px solid lightgray;
+    margin: 20px 30px;
+    padding: 10px;
+}
+.review-td{
+    font-size: 16px;
+    border: 1px solid lightgray;
+    margin: 20px 30px;
+    padding: 10px;
+    text-overflow: ellipsis;
+}
+.restart-btn{
+    align-self: center;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+    background: lightgray;
+}

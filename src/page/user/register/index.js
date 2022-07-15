@@ -1,14 +1,24 @@
-import React from "react";
+import React, {useState} from "react";
 import {Formik,Form, Field, ErrorMessage} from "formik";
 import axios from 'axios'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import request from "../../../utils/auth";
 import "./register.css"
+import StatusComponent from "../../../component/status";
+import LoadingComponent from "../../../component/loading";
+import {userLogin} from "../../../reducers/user";
+import {useDispatch} from "react-redux";
 
 function RegisterForm () {
+    const dispatch= useDispatch()
+    const navigate = useNavigate()
+    const [isLoading,setLoading] = useState(false)
+    const [status, setStatus] = useState(false)
+    const [errorResponse, setError] = useState(false)
     function onSubmit (values) {
         //form is valid
-        console.log(values)
+        setError(false)
+        setLoading(true)
         request
             .post('auth/register', {
                     username: values.username,
@@ -16,14 +26,23 @@ function RegisterForm () {
                     email: values.email,
             })
             .then((res) => {
-                console.log("resolve" + res)
+                dispatch(
+                    userLogin({
+                        user: res.data.user,
+                        tokens: res.data.tokens
+                    }))
+                setStatus(true)
+                setLoading(false)
+                setTimeout(() => {
+                    navigate('/profile')
+                },3000)
             })
             .catch((res) => {
-                console.log("reject" + res)
+                console.log(res.response.status)
+                setLoading(false)
+                if (res.response.status===400) setError("*Username already taken")
             })
     }
-
-
 
 
     function validateUsername (value) {
@@ -66,104 +85,99 @@ function RegisterForm () {
     }
     return (
         <section className="section">
-            <h1 className="h1">
-                Create your account
-            </h1>
-            <button className="social-login"><i className="fa-brands fa-facebook-f icon"/>Continue with Facebook</button>
-            <button className="social-login"><i className="fa-brands fa-google icon"/>Continue with Google</button>
-            <h2 className="register-h2">OR LOG IN WITH EMAIL</h2>
-            <Formik
+                <h1 className="h1">
+                    Create your account
+                </h1>
+                <button className="social-login"><i className="fa-brands fa-facebook-f icon"/>Continue with Facebook</button>
+                <button className="social-login"><i className="fa-brands fa-google icon"/>Continue with Google</button>
+                <h2 className="register-h2">OR LOG IN WITH EMAIL</h2>
+            {errorResponse && <p className="invalid-feedback">{errorResponse}</p>}
+                <Formik
                 initialValues={{
-                    username: "",
-                    email: "",
-                    password: "",
-                    toggle: false,
-                }}
+                username: "",
+                email: "",
+                password: "",
+                toggle: false,
+            }}
                 onSubmit={onSubmit}>
-                {({errors, touched})=> (
-                    <Form className="form-container">
-                        <div className="form-group">
-                            <Field
-                                name="username"
-                                placeholder="Username"
-                                style={{fontStyle: "italic"}}
-                                className={`form-control ${
-                                    touched.username && errors.username ? "is-invalid":""}`}
-                                validate={validateUsername()}
-                            />
-                            <ErrorMessage
-                                component="div"
-                                name="username"
-                                className="invalid-feedback"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <Field
-                                name="email"
-                                placeholder="Email"
-                                style={{fontStyle: "italic"}}
-                                className={`form-control ${
-                                    touched.email && errors.email ? "is-invalid":""}`}
-                                validate={validateEmail}
-                            />
-                            <ErrorMessage
-                                component="div"
-                                name="email"
-                                className="invalid-feedback"
-                            />
-                        </div>
-                        <div className="form-group">
-                            <Field
-                                name="password"
-                                type="password"
-                                placeholder="Password"
-                                style={{fontStyle: "italic"}}
-                                className={`form-control ${
-                                    touched.password && errors.password ? "is-invalid":""}`}
-                                validate={validatePassword}
-                            />
-                            <ErrorMessage
-                                component="div"
-                                name="password"
-                                className="invalid-feedback"
-                            />
-                        </div>
-                        <label className="checkbox-label">
-                            I have read the <span style={{color:"blue"}}> Private policy</span>
-                            <Field
-                                type="checkbox"
-                                name="toggle"
-                                className={`checkbox ${
-                                    touched.toggle && errors.toggle ? "is-invalid":""}`}
-                                validate={validatePolicy}
-                            />
-                            <ErrorMessage
-                                component="div"
-                                name="toggle"
-                                className="invalid-feedback"
-                                style={{fontSize: 16}}
-                            />
-                        </label>
+            {({errors, touched})=> (
+                <Form className="form-container">
+                <div className="form-group">
+                <Field
+                name="username"
+                placeholder="Username"
+                style={{fontStyle: "italic"}}
+                className={`form-control ${
+                touched.username && errors.username ? "is-invalid":""}`}
+                validate={validateUsername()}
+                />
+                <ErrorMessage
+                component="div"
+                name="username"
+                className="invalid-feedback"
+                />
+                </div>
+                <div className="form-group">
+                <Field
+                name="email"
+                placeholder="Email"
+                style={{fontStyle: "italic"}}
+                className={`form-control ${
+                touched.email && errors.email ? "is-invalid":""}`}
+                validate={validateEmail}
+                />
+                <ErrorMessage
+                component="div"
+                name="email"
+                className="invalid-feedback"
+                />
+                </div>
+                <div className="form-group">
+                <Field
+                name="password"
+                type="password"
+                placeholder="Password"
+                style={{fontStyle: "italic"}}
+                className={`form-control ${
+                touched.password && errors.password ? "is-invalid":""}`}
+                validate={validatePassword}
+                />
+                <ErrorMessage
+                component="div"
+                name="password"
+                className="invalid-feedback"
+                />
+                </div>
+                <label className="checkbox-label">
+                I have read the <span style={{color:"blue"}}> Private policy</span>
+                <Field
+                type="checkbox"
+                name="toggle"
+                className={`checkbox ${
+                touched.toggle && errors.toggle ? "is-invalid":""}`}
+                validate={validatePolicy}
+                />
+                <ErrorMessage
+                component="div"
+                name="toggle"
+                className="invalid-feedback"
+                style={{fontSize: 16}}
+                />
+                </label>
 
-                        <button
-                            className="btn"
-                            type="submit"
-                            onMouseDown={(event)=>{
-                                event.target.style.transition="150ms linear";
-                                event.target.style.backgroundColor= "#2f27e8"
-                                event.target.style.color="#ffffff"}
-                            }
-                            onMouseUp={(event)=> {
-                                event.target.style.transition="150ms linear";
-                                event.target.style.backgroundColor= "white"
-                                event.target.style.color="#000000"}}
-                        >GET STARTED</button>
-                    </Form>
+                <button
+                className="btn"
+                type="submit"
+                disabled={isLoading || status}
+                >{(isLoading && <LoadingComponent size={40} border={5}/>) ||
+                    (!isLoading && status && <StatusComponent status={status}/>
+                    ) ||"GET STARTED"}</button>
+                </Form>
                 )}
-            </Formik>
-            <p className="p">ALREADY HAVE AN ACCOUNT? <Link to="/login" className="link">LOG IN</Link></p>
-        </section>
-    )
+                </Formik>
+                <p className="p">ALREADY HAVE AN ACCOUNT? <Link to="/login" className="link">LOG IN</Link></p>
+            </section>
+            )
 }
 
 export default RegisterForm

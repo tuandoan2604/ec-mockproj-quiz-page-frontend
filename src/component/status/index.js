@@ -1,8 +1,7 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./status.css"
 
-function StatusComponent(){
-    const [status, setStatus] = useState(true)
+function StatusComponent(props){
     const Tick = () =>
         <div className="wrapper">
             <svg className="checkmark-tick" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
@@ -19,10 +18,10 @@ function StatusComponent(){
             </svg>
         </div>
     return (
-        <div className="section">
-            {status && <Tick />}
-            {!status && <Cross />}
-        </div>
+        <>
+            {props.status && <Tick />}
+            {!props.status && <Cross />}
+        </>
     )
 }
 

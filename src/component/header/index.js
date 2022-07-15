@@ -1,6 +1,6 @@
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {logout, selectUser} from "../../features/userSlice";
+import {userLogout, selectUser} from "../../reducers/user";
 import {useNavigate} from "react-router-dom";
 import "./header.css"
 function HeaderComponent(props){
@@ -14,7 +14,7 @@ function HeaderComponent(props){
                      alt=""/> Hello, {props.user.username}</li>
             <li><button onClick={(e) => {
                 e.preventDefault();
-                dispatch(logout())
+                dispatch(userLogout())
                 navigate('/login')
             }}>
                 Log out

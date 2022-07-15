@@ -53,6 +53,8 @@
     height: 25px;
 }
 .btn{
+    display: flex;
+    justify-content: center;
     width: 60%;
     background-color: white;
     padding: 10px 0;

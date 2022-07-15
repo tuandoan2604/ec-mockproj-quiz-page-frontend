@@ -76,3 +76,9 @@
     background-color: red;
     color: white;
 }
+
+.btn-active{
+    color: white;
+    background:linear-gradient(to right,#5335DC, #27E9F7);
+}
+

@@ -1,37 +1,39 @@
-import React, {useLayoutEffect, useState} from "react";
+import React, {useState} from "react";
 import {Formik,Form, Field, ErrorMessage} from "formik";
 import "./login.css"
 import request from "../../../utils/auth";
 import {useDispatch, useSelector} from "react-redux";
-import {login, selectUser, selectTokens, refresh} from "../../../features/userSlice";
+import {userLogin, selectUser} from "../../../reducers/user";
 import {Link, useNavigate} from "react-router-dom";
+import LoadingComponent from "../../../component/loading";
 
 function LoginForm () {
 
-    let user = useSelector(selectUser)
-
+    const user = useSelector(selectUser)
+    const [isLoading, setLoading] = useState(false);
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [error, setError] = useState()
     function onSubmit (values) {
+        setLoading(true)
         request
             .post(`auth/login`,{
                     username: values.username,
-                    password:values.password
+                    password: values.password
             })
 
             .then( (res) => {
                     dispatch(
-                        login({
-                        user: res.data.user
-                        }))
-                    dispatch(refresh({
+                        userLogin({
+                            user: res.data.user,
                             tokens: res.data.tokens
                         }))
+                setLoading(false)
                 navigate("/profile")
             })
             .catch((res) => {
-                if(res.response.status == 401)
+                setLoading(false)
+                if(res.response.status === 401)
                     setError('*Incorrect username or password')
             })
         }
@@ -51,7 +53,6 @@ function LoginForm () {
         }
         return error;
     }
-
 
     return (
         <>
@@ -126,7 +127,11 @@ function LoginForm () {
                                         event.target.style.backgroundColor = "white"
                                         event.target.style.color = "#000000"
                                     }}
-                                >LOG IN
+                                    disabled={isLoading}
+                                >{
+                                    (isLoading && <LoadingComponent size={30} border={5}/>) || "LOG IN"
+
+                                }
                                 </button>
                             </Form>
                         )}
