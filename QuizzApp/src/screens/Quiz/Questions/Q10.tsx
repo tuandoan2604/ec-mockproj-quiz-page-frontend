@@ -4,102 +4,30 @@ import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import {IC_NEXT, IC_PREVIOUS_COLOR} from '../../../assets';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import Answer from '../../../components/Answer';
 
 const Q10 = () => {
   const navigation = useNavigation<any>();
-  const [isFalse, setIsFalse] = useState(true);
-  const [isTrue, setIsTrue] = useState(true);
-
-  const changeStyleFalse = useCallback(() => {
-    setIsFalse(!isFalse);
-  }, [isFalse]);
-
-  const changeStyleTrue = useCallback(() => {
-    setIsTrue(!isTrue);
-  }, [isTrue]);
 
   const goToResult = useCallback(() => {
     navigation.navigate('ResultScreen');
   }, []);
 
+  const question = useSelector(state => state.Question.question[9]);
+  const id = question.id;
+
   return (
     <Container>
-      <Question>What is the meaning of UI UX Design ?</Question>
+      <Question>{question.question}</Question>
 
-      <AnswerSection>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>A</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          User Interfoce and User Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>B</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          User Introface and User Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection onPress={changeStyleFalse}>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>C</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          User Interfice and Using Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection onPress={changeStyleTrue}>
-        <AnswerHover
-          style={{
-            backgroundColor: isTrue ? '#e9e9e9' : '#3dcf79',
-          }}>
-          <AnswerSelection>D</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isTrue ? '#333333' : '#3dcf79',
-          }}>
-          User Interface and User Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>E</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          Using Interface and Using Experience
-        </AnswerText>
-      </AnswerSection>
+      <Answer
+        answer1={question.answer1}
+        answer2={question.answer2}
+        answer3={question.answer3}
+        answer4={question.answer4}
+        id={id}
+      />
 
       <Footer>
         <TouchableOpacity>
@@ -130,39 +58,12 @@ const Question = styled.Text`
   margin: 24px 24px;
 `;
 
-const AnswerSection = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 16px;
-`;
-
-const AnswerHover = styled.View`
-  width: 40px;
-  height: 40px;
-  border-radius: 30px;
-  justify-content: center;
-  align-items: center;
-  margin: 0 8px 0 24px;
-`;
-const AnswerSelection = styled.Text`
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  color: #ffffff;
-`;
-
-const AnswerText = styled.Text`
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 400;
-`;
-
 const Footer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin: 0 24px;
-  align-items: center;
+  margin: 0px 24px 32px 24px;
   flex: 1;
+  align-items: auto;
 `;
 
 const ButtonSubmit = styled.TouchableOpacity`

@@ -28,6 +28,8 @@ const SignInScreen = () => {
     return dispatch(fetchAsyncLogin(data)).then(response => {
       if (!response.error) {
         navigation.navigate('HomeScreen');
+      } else {
+        Alert.alert('Check your password or username information');
       }
     });
   }, [data]);

@@ -1,10 +1,10 @@
-import {Dimensions, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
 // @ts-ignore
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import ItemLesson from '../../../components/ItemLesson';
 import ContinueLesson from '../../../components/ContinueLesson';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {addQuestion} from '../../../store/slices/GetQuestionSlice';
@@ -32,8 +32,6 @@ const ComputerScreen = () => {
         console.log(error);
       });
   }, [question]);
-
-  console.log(question);
 
   const goToDetail = useCallback(() => {
     navigation.navigate('DetailScreen');

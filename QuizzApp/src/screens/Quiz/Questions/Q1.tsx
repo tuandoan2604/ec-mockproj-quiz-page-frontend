@@ -1,100 +1,59 @@
-import {StyleSheet} from 'react-native';
-import React, {useCallback, useEffect, useState} from 'react';
+import {Button, StyleSheet, Text} from 'react-native';
+import React, {useState} from 'react';
 import styled from 'styled-components/native';
-import {useDispatch} from 'react-redux';
-import {fetchAsyncQuestionData} from '../../../store/slices/GetQuestionSlice';
+import {useSelector} from 'react-redux';
+import Answer from '../../../components/Answer';
+import axios from 'axios';
+import {baseURL} from '../../../config/api';
 
 const Q1 = () => {
-  const [isFalse, setIsFalse] = useState(true);
-  const [isTrue, setIsTrue] = useState(true);
-  const [loading, setLoading] = useState(true);
+  const [score, setScore] = useState(0);
+  const token = useSelector(state => state.Auth.payload.tokens.access.token);
+  const question = useSelector(state => state.Question.question[0]);
+  const id = question.id;
 
-  const changeStyleFalse = useCallback(() => {
-    setIsFalse(!isFalse);
-  }, [isFalse]);
-
-  const changeStyleTrue = useCallback(() => {
-    setIsTrue(!isTrue);
-  }, [isTrue]);
+  const SubmitAnswer = () => {
+    axios
+      .post(
+        baseURL + `/v1/questions/submit`,
+        [
+          {
+            id: id,
+            correctanswer: question.answer1,
+          },
+        ],
+        {headers: {Authorization: `Bearer ${token}`}},
+      )
+      .then(response => {
+        console.log(response.data);
+        if (
+          response.data[1].result &&
+          String(response.data[1].result) == 'true'
+        ) {
+          setScore(score => score + 1);
+        } else {
+          setScore(score => (score = 0));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   return (
     <Container>
-      <Question>What is the meaning of UI UX Design ?</Question>
+      <Question>{question.question}</Question>
 
-      <AnswerSection onPress={changeStyleFalse}>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>A</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          User Interfoce and User Experience
-        </AnswerText>
-      </AnswerSection>
+      <Answer
+        answer1={question.answer1}
+        answer2={question.answer2}
+        answer3={question.answer3}
+        answer4={question.answer4}
+        id={id}
+      />
 
-      <AnswerSection onPress={changeStyleFalse}>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>B</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          User Introface and User Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection onPress={changeStyleFalse}>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>C</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          User Interfice and Using Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection onPress={changeStyleTrue}>
-        <AnswerHover
-          style={{
-            backgroundColor: isTrue ? '#e9e9e9' : '#3dcf79',
-          }}>
-          <AnswerSelection>D</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isTrue ? '#333333' : '#3dcf79',
-          }}>
-          User Interface and User Experience
-        </AnswerText>
-      </AnswerSection>
-
-      <AnswerSection onPress={changeStyleFalse}>
-        <AnswerHover
-          style={{
-            backgroundColor: isFalse ? '#e9e9e9' : '#FF0000',
-          }}>
-          <AnswerSelection>E</AnswerSelection>
-        </AnswerHover>
-        <AnswerText
-          style={{
-            color: isFalse ? '#333333' : '#FF0000',
-          }}>
-          Using Interface and Using Experience
-        </AnswerText>
-      </AnswerSection>
+      {/* <Button title="submit" onPress={SubmitAnswer} /> */}
+      {/* <Text>{score}</Text> */}
     </Container>
   );
 };
@@ -113,31 +72,4 @@ const Question = styled.Text`
   line-height: 18px;
   color: #333333;
   margin: 24px 24px;
-`;
-
-const AnswerSection = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 16px;
-`;
-
-const AnswerHover = styled.View`
-  width: 40px;
-  height: 40px;
-  border-radius: 30px;
-  justify-content: center;
-  align-items: center;
-  margin: 0 8px 0 24px;
-`;
-const AnswerSelection = styled.Text`
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 21px;
-  color: #ffffff;
-`;
-
-const AnswerText = styled.Text`
-  font-size: 14px;
-  line-height: 16px;
-  font-weight: 400;
 `;

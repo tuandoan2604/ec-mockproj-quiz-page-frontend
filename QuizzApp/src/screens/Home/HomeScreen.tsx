@@ -10,8 +10,6 @@ import TopTab from '../../nav/TopTab';
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState('');
 
-  //  const token = useSelector(state => state.Auth.payload.tokens.access.token);
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>

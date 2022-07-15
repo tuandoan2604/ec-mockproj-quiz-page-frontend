@@ -14,6 +14,7 @@ const getQuestionSlice = createSlice({
   name: 'Question',
   initialState: {
     question: null,
+    score: 0,
   },
   reducers: {
     addQuestion(state, action) {

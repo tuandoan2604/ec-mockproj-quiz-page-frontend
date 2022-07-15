@@ -15,13 +15,10 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 
 const width = Dimensions.get('window').width;
 const DetailScreen = () => {
-  const route = useRoute();
-  const question = route.params;
   const navigation = useNavigation<any>();
   const goToQuiz = useCallback(() => {
-    navigation.navigate('QuizScreen', question);
+    navigation.navigate('QuizScreen');
   }, []);
-  console.log('data', question);
 
   return (
     <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
