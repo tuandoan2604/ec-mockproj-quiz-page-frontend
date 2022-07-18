@@ -29,7 +29,7 @@ function ReviewPage () {
             </tr>
             {scores.marks.map((mark, index) => {
                 return(
-                    <tr>
+                    <tr key={mark.id}>
                         <td className="review-td">{index + 1}</td>
                         <td className="review-td" >{questions[index].question}</td>
                         <td className="review-td">{mark.correctanswer}</td>

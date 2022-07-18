@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import request from "../../utils/auth";
 import "./question.css"
 import {useDispatch, useSelector} from "react-redux";
@@ -10,14 +10,14 @@ import {updateScore} from "../../reducers/score";
 import LoadingComponent from "../../component/loading";
 
 function QuestComponent () {
-    const [isLoading, setLoading] = useState(false)
+    const [isLoading, setLoading] = useState(true)
     const [tabIndex, setTabIndex] = useState(0)
     const tokens = useSelector(selectTokens);
     const questions = useSelector(selectQuestion)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const errorHandler = () => {
+    const errorHandler = (fx) => {
         request
             .post('auth/refresh-tokens', {
                 refreshToken: tokens.refresh.token
@@ -26,13 +26,13 @@ function QuestComponent () {
                 dispatch(tokenRefresh(res.data))
                 console.log( 'success')
                 console.log(res.data)
-                // console.log(tokens)
             })
+            .then(() => fx())
             .catch(res => {
                 console.log('refresh-error')
                 console.log(res)
+                // errorHandler()
             })
-
     }
 
     function handleAnsClick (props, e) {
@@ -42,9 +42,9 @@ function QuestComponent () {
                 correctanswer: e.target.textContent
             })
         )
-        if(tabIndex<9) setTimeout(() => setTabIndex(tabIndex+1), 500)
+        if(tabIndex<9) setTimeout(() =>
+            setTabIndex(tabIndex+1), 500)
 
-        console.log(e.target)
     }
 
     function handleSubmit () {
@@ -65,11 +65,15 @@ function QuestComponent () {
                 dispatch(updateScore(res.data))
                 navigate('./result')
             })
+            .catch(res => {
+                 errorHandler(handleSubmit)
+                setLoading(false)
+            })
     }
 
     useLayoutEffect(() => {
-            setLoading(true)
-            request
+            fetchData()
+            function fetchData () { request
                 .get('questions', {
                     params: {
                         page: 1,
@@ -80,24 +84,21 @@ function QuestComponent () {
                     }
                 })
                 .then(res => {
-                    setLoading(false)
                     dispatch(
                         fetchQuestion(res.data.results))
+                    setLoading(false)
                 })
                 .catch(() => {
-                    setLoading(false)
                         console.log('error')
-                        errorHandler()
+                        errorHandler(fetchData)
                     }
-                )
+                )}
         console.log(questions)
     },[])
 
-    console.log(questions)
-
     return(
         <div className="quizz-container">
-            {(isLoading && <LoadingComponent size={100} border={10}/>) ||
+            {(isLoading && <LoadingComponent size={50} border={10}/>) ||
                 <>
                 <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
                     <TabList className="quizz-nav">
@@ -144,11 +145,12 @@ function QuestComponent () {
                         </TabPanel>)}
                 </Tabs>
                 <div className="tab-nav-btn">
-                    {(tabIndex>0) && <button id="prev" onClick={() => {if(tabIndex>0) setTabIndex(tabIndex-1)}}>Prev</button>}
-                    {(tabIndex<9) && <button id="next" onClick={() => {if(tabIndex<9) setTabIndex(tabIndex+1)}}>Next</button>}
-                    {(tabIndex === 9) && <button id="submit" onClick={handleSubmit} disabled={isLoading}>Submit</button>}
+            {(tabIndex>0) && <button id="prev" onClick={() => {if(tabIndex>0) setTabIndex(tabIndex-1)}}>Prev</button>}
+            {(tabIndex<9) && <button id="next" onClick={() => {if(tabIndex<9) setTabIndex(tabIndex+1)}}>Next</button>}
+            {(tabIndex === 9) && <button id="submit" onClick={handleSubmit} disabled={isLoading}>Submit</button>}
                 </div>
-                </>}
+                </>
+            }
         </div>)
 }
 

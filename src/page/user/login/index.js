@@ -21,7 +21,6 @@ function LoginForm () {
                     username: values.username,
                     password: values.password
             })
-
             .then( (res) => {
                     dispatch(
                         userLogin({
@@ -33,6 +32,7 @@ function LoginForm () {
             })
             .catch((res) => {
                 setLoading(false)
+                console.log(res)
                 if(res.response.status === 401)
                     setError('*Incorrect username or password')
             })

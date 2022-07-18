@@ -32,7 +32,7 @@
     stroke-miterlimit: 10;
     stroke: #ff0000;
     fill: none;
-    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
 .checkmark__circle-tick{
     stroke-dasharray: 166;
@@ -41,14 +41,14 @@
     stroke-miterlimit: 10;
     stroke: #7ac142;
     fill: none;
-    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) forwards
 }
 
 .checkmark_check {
     transform-origin: 50% 50%;
     stroke-dasharray: 48;
     stroke-dashoffset: 48;
-    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    animation: stroke 0.1s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
 
 @keyframes stroke {
