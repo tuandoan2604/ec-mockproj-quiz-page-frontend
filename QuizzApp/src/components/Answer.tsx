@@ -20,7 +20,7 @@ const Answer = (prop: Props) => {
   const [isSelect3, setIsSelect3] = useState(true);
   const [isSelect4, setIsSelect4] = useState(true);
   const token = useSelector(state => state.Auth.payload.tokens.access.token);
-
+  // lưu đáp án vào reudx
   const SubmitAnswer1 = useCallback(() => {
     axios
       .post(

@@ -9,27 +9,38 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Text,
 } from 'react-native';
 import {IC_BACK_CIRCLE, IC_FB, IC_GG} from '../assets';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
 import {fetchAsyncLogin} from '../store/slices/AuthSlice';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {isValidPassword} from '../utilities/Validation';
 
 const width = Dimensions.get('window').width;
 
 const SignInScreen = () => {
+  const [showPass, setShowPass] = useState(true);
   const dispatch = useDispatch();
   const [data, setData] = useState({
     username: '',
     password: '',
   });
+  const [errorPassword, setErrorPassword] = useState('');
+
+  const isValidationOK = () => {
+    data.password.length > 0 && isValidPassword(data.password) == true;
+  };
+
+  const handleShowPass = useCallback(() => {
+    setShowPass(!showPass);
+  }, [showPass]);
 
   const handleLogin = useCallback(() => {
     return dispatch(fetchAsyncLogin(data)).then(response => {
       if (!response.error) {
         navigation.navigate('HomeScreen');
-      } else {
-        Alert.alert('Check your password or username information');
       }
     });
   }, [data]);
@@ -51,6 +62,9 @@ const SignInScreen = () => {
 
   const onChangePassword = useCallback(
     val => {
+      setErrorPassword(
+        isValidPassword(val) == true ? '' : 'Check your password',
+      );
       setData({...data, password: val});
     },
     [data],
@@ -84,18 +98,38 @@ const SignInScreen = () => {
           <TextLoginOther>OR LOGIN WITH EMAIL</TextLoginOther>
         </ButtonSection>
 
-        <InputSection>
-          <InputEmail
+        <InputEmail>
+          <Email
             placeholder={'Email'}
             value={data.username}
             onChangeText={onChangeUsername}
           />
-          <InputPassword
+        </InputEmail>
+
+        <InputPassword>
+          <Password
             placeholder={'Password'}
             value={data.password}
             onChangeText={onChangePassword}
+            secureTextEntry={showPass}
           />
-        </InputSection>
+          <ButtonShowPass onPress={handleShowPass}>
+            <FontAwesome
+              name={!showPass ? 'eye' : 'eye-slash'}
+              size={18}
+              color="black"
+            />
+          </ButtonShowPass>
+        </InputPassword>
+        <Text
+          style={{
+            color: '#fff',
+            fontSize: 12,
+            marginLeft: 22,
+            marginTop: 5,
+          }}>
+          {errorPassword}
+        </Text>
 
         <ButtonLogin onPress={handleLogin}>
           <ButtonLoginText>LOG IN</ButtonLoginText>
@@ -175,13 +209,26 @@ const TextLoginOther = styled.Text`
   margin-top: 30px;
 `;
 
-const InputSection = styled.View`
-  justify-content: center;
+const InputEmail = styled.View`
   align-items: center;
-  margin-top: 60px;
 `;
 
-const InputEmail = styled.TextInput`
+const InputPassword = styled.View`
+  width: 360px;
+  height: 50px;
+  background-color: white;
+  border-radius: 38px;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 30px;
+  align-self: center;
+`;
+
+const ButtonShowPass = styled.TouchableOpacity`
+  margin-right: 12px;
+`;
+
+const Email = styled.TextInput`
   width: 360px;
   height: 50px;
   background-color: white;
@@ -191,7 +238,11 @@ const InputEmail = styled.TextInput`
   padding: 10px;
 `;
 
-const InputPassword = styled(InputEmail)``;
+const Password = styled.TextInput`
+  height: 50px;
+  flex: auto;
+  padding: 10px;
+`;
 
 const ButtonLogin = styled(ButtonFB)`
   justify-content: center;
