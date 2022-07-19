@@ -3,8 +3,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 import {useSelector} from 'react-redux';
 import Answer from '../../../components/Answer';
-import axios from 'axios';
-import {baseURL} from '../../../config/api';
 
 const Q2 = () => {
   const question = useSelector(state => state.Question.question[1]);

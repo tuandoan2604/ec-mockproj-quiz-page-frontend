@@ -12,6 +12,7 @@ import {
 } from '../../assets';
 import styled from 'styled-components/native';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 const width = Dimensions.get('window').width;
 
@@ -21,6 +22,9 @@ const ResultScreen = () => {
     navigation.navigate('QuizScreen');
   }, []);
 
+  const point = useSelector(state => state.Question.point);
+  const correct_answer = useSelector(state => state.Question.correct_answer);
+
   return (
     <LinearGradient colors={['#3179E3', '#2DA7EB']} style={styles.background}>
       <HeaderBack title={'Detail Quiz'} />
@@ -28,7 +32,7 @@ const ResultScreen = () => {
       <HeaderSection>
         <View>
           <HeaderTitle>UI UX Design Quiz</HeaderTitle>
-          <Target> 90/100 points</Target>
+          <Target>{point}/100 points</Target>
         </View>
         <RatingSection>
           <IconStar source={IC_STAR} />
@@ -41,7 +45,7 @@ const ResultScreen = () => {
         <WrapItem>
           <IconDark source={IC_QUESTION_DARK} />
           <View>
-            <ItemTitle>9/10 Correct Questions</ItemTitle>
+            <ItemTitle>{correct_answer}/10 Correct Questions</ItemTitle>
             <DescriptionText>10 point for a correct answer</DescriptionText>
           </View>
         </WrapItem>
@@ -57,7 +61,7 @@ const ResultScreen = () => {
         <WrapItem>
           <IconDark source={IC_STAR_DARK} />
           <View>
-            <ItemTitle>9 stars achieved</ItemTitle>
+            <ItemTitle> {correct_answer} stars achieved</ItemTitle>
             <DescriptionText>Answer all questions correctly</DescriptionText>
           </View>
         </WrapItem>

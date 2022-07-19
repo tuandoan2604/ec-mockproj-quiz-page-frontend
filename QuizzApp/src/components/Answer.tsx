@@ -3,8 +3,8 @@ import React, {useCallback, useState} from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
 import {baseURL} from '../config/api';
-import {useSelector} from 'react-redux';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {incremented, decremented} from '../store/slices/GetQuestionSlice';
 interface Props {
   answer1: string;
   answer2: string;
@@ -14,12 +14,12 @@ interface Props {
 }
 
 const Answer = (prop: Props) => {
-  const [score, setScore] = useState(0);
   const [isSelect1, setIsSelect1] = useState(true);
   const [isSelect2, setIsSelect2] = useState(true);
   const [isSelect3, setIsSelect3] = useState(true);
   const [isSelect4, setIsSelect4] = useState(true);
   const token = useSelector(state => state.Auth.payload.tokens.access.token);
+  const dispatch = useDispatch();
   // lưu đáp án vào reudx
   const SubmitAnswer1 = useCallback(() => {
     axios
@@ -39,13 +39,9 @@ const Answer = (prop: Props) => {
           response.data[0].result &&
           String(response.data[0].result) == 'true'
         ) {
-          setScore(score => score + 1);
+          dispatch(incremented());
         } else {
-          if (score == 0) {
-            setScore(0);
-          } else {
-            setScore(score - 1);
-          }
+          dispatch(decremented());
         }
       })
       .catch(error => {
@@ -71,9 +67,9 @@ const Answer = (prop: Props) => {
           response.data[0].result &&
           String(response.data[0].result) == 'true'
         ) {
-          setScore(score => score + 1);
+          dispatch(incremented());
         } else {
-          setScore(0);
+          dispatch(decremented());
         }
       })
       .catch(error => {
@@ -99,9 +95,9 @@ const Answer = (prop: Props) => {
           response.data[0].result &&
           String(response.data[0].result) == 'true'
         ) {
-          setScore(score => score + 1);
+          dispatch(incremented());
         } else {
-          setScore(0);
+          dispatch(decremented());
         }
       })
       .catch(error => {
@@ -127,9 +123,9 @@ const Answer = (prop: Props) => {
           response.data[0].result &&
           String(response.data[0].result) == 'true'
         ) {
-          setScore(score => score + 1);
+          dispatch(incremented());
         } else {
-          setScore(0);
+          dispatch(decremented());
         }
       })
       .catch(error => {
@@ -218,8 +214,6 @@ const Answer = (prop: Props) => {
           {prop.answer4}
         </AnswerText>
       </AnswerSection>
-
-      <Text>{score}</Text>
     </View>
   );
 };

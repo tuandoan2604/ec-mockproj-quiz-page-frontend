@@ -13,7 +13,8 @@ export const fetchAsyncLogin = createAsyncThunk(
 export const fetchAsyncRegister = createAsyncThunk(
   'auth/fetchAsyncRegister',
   async (data: any, thunkAPI) => {
-    console.log('fetch register');
+    const response = await AuthService.login(data);
+    return response.data;
   },
 );
 

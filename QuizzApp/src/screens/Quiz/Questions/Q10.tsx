@@ -30,13 +30,9 @@ const Q10 = () => {
       />
 
       <Footer>
-        <TouchableOpacity>
-          <Image source={IC_PREVIOUS_COLOR} />
-        </TouchableOpacity>
         <ButtonSubmit onPress={goToResult}>
           <Text>Submit Quiz</Text>
         </ButtonSubmit>
-        <Image source={IC_NEXT} />
       </Footer>
     </Container>
   );
@@ -60,7 +56,7 @@ const Question = styled.Text`
 
 const Footer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   margin: 0px 24px 32px 24px;
   flex: 1;
   align-items: auto;

@@ -11,6 +11,7 @@ import DetailScreen from '../screens/Detail/DetailScreen';
 import QuizScreen from '../screens/Quiz/QuizScreen';
 import ResultScreen from '../screens/Result/ResultScreen';
 import WelcomeScreen from '../screens/WelcomeScreen';
+import QuestionsTopTab from '../screens/Quiz/Questions/QuestionsTopTab';
 
 export type RootStackParamsList = {
   WelcomeScreen: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamsList = {
   DetailScreen: undefined;
   QuizScreen: undefined;
   ResultScreen: undefined;
+  QuestionTopTab: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamsList>();
@@ -67,6 +69,11 @@ const RootStack = () => {
         <Stack.Screen
           name={'ResultScreen'}
           component={ResultScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name={'QuestionTopTab'}
+          component={QuestionsTopTab}
           options={{headerShown: false}}
         />
       </Stack.Navigator>

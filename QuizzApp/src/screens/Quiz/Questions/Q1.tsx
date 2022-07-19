@@ -1,44 +1,12 @@
-import {Button, StyleSheet, Text} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, Text} from 'react-native';
+import React from 'react';
 import styled from 'styled-components/native';
 import {useSelector} from 'react-redux';
 import Answer from '../../../components/Answer';
-import axios from 'axios';
-import {baseURL} from '../../../config/api';
 
 const Q1 = () => {
-  const [score, setScore] = useState(0);
-  const token = useSelector(state => state.Auth.payload.tokens.access.token);
   const question = useSelector(state => state.Question.question[0]);
   const id = question.id;
-
-  const SubmitAnswer = () => {
-    axios
-      .post(
-        baseURL + `/v1/questions/submit`,
-        [
-          {
-            id: id,
-            correctanswer: question.answer1,
-          },
-        ],
-        {headers: {Authorization: `Bearer ${token}`}},
-      )
-      .then(response => {
-        console.log(response.data);
-        if (
-          response.data[1].result &&
-          String(response.data[1].result) == 'true'
-        ) {
-          setScore(score => score + 1);
-        } else {
-          setScore(score => (score = 0));
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
 
   return (
     <Container>
@@ -52,8 +20,9 @@ const Q1 = () => {
         id={id}
       />
 
-      {/* <Button title="submit" onPress={SubmitAnswer} /> */}
-      {/* <Text>{score}</Text> */}
+      <Footer>
+        <Text style={{fontSize: 24}}>Slide to next Question </Text>
+      </Footer>
     </Container>
   );
 };
@@ -72,4 +41,12 @@ const Question = styled.Text`
   line-height: 18px;
   color: #333333;
   margin: 24px 24px;
+`;
+
+const Footer = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  margin: 0px 24px 32px 24px;
+  flex: 1;
+  align-items: auto;
 `;
