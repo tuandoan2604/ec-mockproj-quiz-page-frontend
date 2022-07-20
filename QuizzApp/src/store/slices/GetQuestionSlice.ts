@@ -11,11 +11,11 @@ const getQuestionSlice = createSlice({
     addQuestion(state, action) {
       state.question = action.payload;
     },
-    incremented(state, action) {
+    incremented(state) {
       state.point += 10;
       state.correct_answer += 1;
     },
-    decremented(state, action) {
+    decremented(state) {
       if ((state.point == 0, state.correct_answer == 0)) {
         state.point == 0;
         state.correct_answer == 0;

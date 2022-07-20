@@ -13,6 +13,9 @@ import {IC_BACK_CIRCLE, IC_FB, IC_GG} from '../assets';
 import {useNavigation} from '@react-navigation/native';
 import CheckBox from '@react-native-community/checkbox';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {isValidPassword} from '../utilities/Validation';
+import {useDispatch} from 'react-redux';
+import {fetchAsyncRegister} from '../store/slices/RegisterSlice';
 
 const width = Dimensions.get('window').width;
 
@@ -20,6 +23,19 @@ const SignUpScreen = () => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [showPass, setShowPass] = useState(true);
   const navigation = useNavigation<any>();
+  const [errorPassword, setErrorPassword] = useState('');
+  const dispatch = useDispatch();
+
+  const [data, setData] = useState({
+    username: '',
+    password: '',
+    email: '',
+  });
+
+  const goLogin = useCallback(() => {
+    navigation.navigate('SignInScreen');
+  }, []);
+
   const goBack = useCallback(() => {
     navigation.goBack();
   }, []);
@@ -27,6 +43,40 @@ const SignUpScreen = () => {
   const handleShowPass = useCallback(() => {
     setShowPass(!showPass);
   }, [showPass]);
+
+  const onChangeUsername = useCallback(
+    val => {
+      setData({...data, username: val});
+    },
+    [data],
+  );
+
+  const onChangeEmail = useCallback(
+    val => {
+      setData({...data, email: val});
+    },
+    [data],
+  );
+
+  const onChangePassword = useCallback(
+    val => {
+      setErrorPassword(
+        isValidPassword(val) == true
+          ? ''
+          : 'Password requires 1 letter, 1 number, min length is 8',
+      );
+      setData({...data, password: val});
+    },
+    [data],
+  );
+
+  const handleLogin = useCallback(() => {
+    return dispatch(fetchAsyncRegister(data)).then(response => {
+      if (!response.error) {
+        navigation.navigate('HomeScreen');
+      }
+    });
+  }, [data]);
 
   return (
     <Container>
@@ -55,11 +105,28 @@ const SignUpScreen = () => {
         </ButtonSection>
 
         <InputEmail>
-          <Email placeholder={'Email'} />
+          <Email
+            placeholder={'Email'}
+            value={data.email}
+            onChangeText={onChangeEmail}
+          />
         </InputEmail>
 
+        <InputUsername>
+          <Username
+            placeholder={'Username'}
+            onChangeText={onChangeUsername}
+            value={data.username}
+          />
+        </InputUsername>
+
         <InputPassword>
-          <Password placeholder={'Password'} secureTextEntry={showPass} />
+          <Password
+            placeholder={'Password'}
+            value={data.password}
+            onChangeText={onChangePassword}
+            secureTextEntry={showPass}
+          />
           <ButtonShowPass onPress={handleShowPass}>
             <FontAwesome
               name={!showPass ? 'eye' : 'eye-slash'}
@@ -68,6 +135,7 @@ const SignUpScreen = () => {
             />
           </ButtonShowPass>
         </InputPassword>
+        <RequirementText>{errorPassword}</RequirementText>
 
         <PolicySection>
           <View style={{flexDirection: 'row'}}>
@@ -90,13 +158,15 @@ const SignUpScreen = () => {
           />
         </PolicySection>
 
-        <ButtonLogin>
+        <ButtonLogin onPress={handleLogin}>
           <ButtonLoginText>GET STARTED</ButtonLoginText>
         </ButtonLogin>
 
         <RemainingView>
           <TextNotLogin>ALREADY HAVE AN ACCOUNT? </TextNotLogin>
-          <TextRegister>LOG IN</TextRegister>
+          <TouchableOpacity onPress={goLogin}>
+            <TextRegister>LOG IN</TextRegister>
+          </TouchableOpacity>
         </RemainingView>
       </LinearGradient>
     </Container>
@@ -167,6 +237,8 @@ const InputEmail = styled.View`
   align-items: center;
 `;
 
+const InputUsername = styled(InputEmail)``;
+
 const InputPassword = styled.View`
   width: 360px;
   height: 50px;
@@ -191,6 +263,8 @@ const Email = styled.TextInput`
   margin-top: 30px;
   padding: 10px;
 `;
+
+const Username = styled(Email)``;
 
 const Password = styled.TextInput`
   height: 50px;
@@ -243,4 +317,10 @@ const LeftCheckBoxText = styled.Text`
 
 const PolicyText = styled(LeftCheckBoxText)`
   color: #0028fd;
+`;
+
+const RequirementText = styled.Text`
+  color: #fff;
+  font-size: 12px;
+  margin: 8px 0 0 22px;
 `;

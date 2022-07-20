@@ -6,9 +6,12 @@ import LinearGradient from 'react-native-linear-gradient';
 import HomeHeader from '../../components/HomeHeader';
 import {IC_SEARCH} from '../../assets';
 import TopTab from '../../nav/TopTab';
+import {useSelector} from 'react-redux';
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState('');
+  // @ts-ignore
+  const user_name = useSelector(state => state.Auth.payload.user.username);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -16,7 +19,7 @@ const HomeScreen = () => {
         <HomeHeader />
 
         <WelcomeSection>
-          <HelloText>Hello, Hiep</HelloText>
+          <HelloText>Hello, {user_name}</HelloText>
           <WelcomeText>Let's test your knowledge</WelcomeText>
         </WelcomeSection>
 

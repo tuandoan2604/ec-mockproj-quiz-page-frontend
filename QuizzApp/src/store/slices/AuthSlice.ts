@@ -3,20 +3,20 @@ import AuthService from '../../config/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchAsyncLogin = createAsyncThunk(
-  'auth/fetchAsyncRegister',
+  'auth/fetchAsyncLogin',
   async (data: any, thunkAPI) => {
     const response = await AuthService.login(data);
     return response.data;
   },
 );
 
-export const fetchAsyncRegister = createAsyncThunk(
-  'auth/fetchAsyncRegister',
-  async (data: any, thunkAPI) => {
-    const response = await AuthService.login(data);
-    return response.data;
-  },
-);
+// export const fetchAsyncRegister = createAsyncThunk(
+//   'auth/fetchAsyncRegister',
+//   async (data: any, thunkAPI) => {
+//     const response = await AuthService.register(data);
+//     return response.data;
+//   },
+// );
 
 const authSlice = createSlice({
   name: 'Auth',
@@ -40,9 +40,6 @@ const authSlice = createSlice({
     builder
       .addCase(fetchAsyncLogin.fulfilled, (state, action) => {
         const payload = action.payload;
-        const {tokens} = action.payload.tokens.access.token;
-        console.log('tokens', action.payload.tokens.access.token);
-        AsyncStorage.setItem('token', tokens);
         return {
           ...state,
           payload: payload,

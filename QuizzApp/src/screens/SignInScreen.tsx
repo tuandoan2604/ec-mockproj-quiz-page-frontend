@@ -100,7 +100,7 @@ const SignInScreen = () => {
 
         <InputEmail>
           <Email
-            placeholder={'Email'}
+            placeholder={'Username'}
             value={data.username}
             onChangeText={onChangeUsername}
           />
@@ -121,15 +121,7 @@ const SignInScreen = () => {
             />
           </ButtonShowPass>
         </InputPassword>
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 12,
-            marginLeft: 22,
-            marginTop: 5,
-          }}>
-          {errorPassword}
-        </Text>
+        <RequirementText>{errorPassword}</RequirementText>
 
         <ButtonLogin onPress={handleLogin}>
           <ButtonLoginText>LOG IN</ButtonLoginText>
@@ -279,4 +271,10 @@ const TextNotLogin = styled.Text`
 
 const TextRegister = styled(TextNotLogin)`
   color: black;
+`;
+
+const RequirementText = styled.Text`
+  color: #fff;
+  font-size: 12px;
+  margin: 8px 0 0 22px;
 `;
