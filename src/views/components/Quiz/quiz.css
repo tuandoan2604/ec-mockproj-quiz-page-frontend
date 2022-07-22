@@ -1,0 +1,9 @@
+.my-btn {
+    background: #D4D4D4;
+    color: white;
+    border: 0
+}
+
+.my-btn.active {
+    background: linear-gradient(122.76deg, #3550DC -35.72%, #27E9F7 172.73%);
+}
