@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {addQuestion} from '../../../store/slices/GetQuestionSlice';
+import {baseURL} from '../../../config/api';
 
 const width = Dimensions.get('window').width;
 
@@ -15,12 +16,13 @@ const ComputerScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const [question, setQuestion] = useState();
+  // @ts-ignore
   const token = useSelector(state => state.Auth.payload.tokens.access.token);
   const [isSelected, setIsSelected] = useState(true);
 
   const getQuestionData = useCallback(() => {
     axios
-      .get('https://fwa-ec-quiz-mock1.herokuapp.com/v1/questions', {
+      .get(baseURL + `/v1/questions?page=2&limit=10`, {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then(response => {
@@ -37,14 +39,10 @@ const ComputerScreen = () => {
     navigation.navigate('DetailScreen');
   }, []);
 
-  const changeStyleSelected = useCallback(() => {
-    setIsSelected(!isSelected);
-  }, [isSelected]);
-
   const getQuestion = useCallback(() => {
     getQuestionData();
-    changeStyleSelected();
-  }, [question, isSelected]);
+    setIsSelected(!isSelected);
+  }, [isSelected]);
 
   return (
     <Container>

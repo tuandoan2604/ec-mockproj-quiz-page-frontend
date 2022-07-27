@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, TouchableWithoutFeedback, Keyboard} from 'react-native';
 import styled from 'styled-components/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -7,6 +7,8 @@ import HomeHeader from '../../components/HomeHeader';
 import {IC_SEARCH} from '../../assets';
 import TopTab from '../../nav/TopTab';
 import {useSelector} from 'react-redux';
+import {baseURL} from '../../config/api';
+import axios from 'axios';
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState('');

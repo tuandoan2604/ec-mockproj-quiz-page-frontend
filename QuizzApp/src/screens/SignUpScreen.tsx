@@ -16,6 +16,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {isValidPassword} from '../utilities/Validation';
 import {useDispatch} from 'react-redux';
 import {fetchAsyncRegister} from '../store/slices/RegisterSlice';
+import InputInfo from '../components/InputInfo';
 
 const width = Dimensions.get('window').width;
 
@@ -44,16 +45,9 @@ const SignUpScreen = () => {
     setShowPass(!showPass);
   }, [showPass]);
 
-  const onChangeUsername = useCallback(
-    val => {
-      setData({...data, username: val});
-    },
-    [data],
-  );
-
-  const onChangeEmail = useCallback(
-    val => {
-      setData({...data, email: val});
+  const onChangeText = useCallback(
+    (keyName: string, value: string) => {
+      setData({...data, [keyName]: value});
     },
     [data],
   );
@@ -63,7 +57,7 @@ const SignUpScreen = () => {
       setErrorPassword(
         isValidPassword(val) == true
           ? ''
-          : 'Password requires 1 letter, 1 number, min length is 8',
+          : 'At least 8 characters, A mixture of letters and numbers. ',
       );
       setData({...data, password: val});
     },
@@ -71,6 +65,7 @@ const SignUpScreen = () => {
   );
 
   const handleLogin = useCallback(() => {
+    // @ts-ignore
     return dispatch(fetchAsyncRegister(data)).then(response => {
       if (!response.error) {
         navigation.navigate('HomeScreen');
@@ -105,18 +100,20 @@ const SignUpScreen = () => {
         </ButtonSection>
 
         <InputEmail>
-          <Email
-            placeholder={'Email'}
+          <InputInfo
+            title={'Email'}
             value={data.email}
-            onChangeText={onChangeEmail}
+            onChangeValue={onChangeText}
+            keyName={'email'}
           />
         </InputEmail>
 
         <InputUsername>
-          <Username
-            placeholder={'Username'}
-            onChangeText={onChangeUsername}
+          <InputInfo
+            title={'Username'}
             value={data.username}
+            onChangeValue={onChangeText}
+            keyName={'username'}
           />
         </InputUsername>
 
@@ -126,6 +123,7 @@ const SignUpScreen = () => {
             value={data.password}
             onChangeText={onChangePassword}
             secureTextEntry={showPass}
+            placeholderTextColor={'gray'}
           />
           <ButtonShowPass onPress={handleShowPass}>
             <FontAwesome
@@ -253,18 +251,6 @@ const InputPassword = styled.View`
 const ButtonShowPass = styled.TouchableOpacity`
   margin-right: 12px;
 `;
-
-const Email = styled.TextInput`
-  width: 360px;
-  height: 50px;
-  background-color: white;
-  border-radius: 38px;
-  flex: auto;
-  margin-top: 30px;
-  padding: 10px;
-`;
-
-const Username = styled(Email)``;
 
 const Password = styled.TextInput`
   height: 50px;

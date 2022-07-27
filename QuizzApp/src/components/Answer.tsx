@@ -5,6 +5,8 @@ import axios from 'axios';
 import {baseURL} from '../config/api';
 import {useDispatch, useSelector} from 'react-redux';
 import {incremented, decremented} from '../store/slices/GetQuestionSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 interface Props {
   answer1: string;
   answer2: string;
@@ -19,6 +21,21 @@ const Answer = (prop: Props) => {
   const [isSelect3, setIsSelect3] = useState(true);
   const [isSelect4, setIsSelect4] = useState(true);
   const token = useSelector(state => state.Auth.payload.tokens.access.token);
+
+  const getToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('access_token');
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // const token = getToken().then(thing => thing);
+  // console.log(token);
+
   const dispatch = useDispatch();
   // lưu đáp án vào reudx
   const SubmitAnswer1 = useCallback(() => {

@@ -21,7 +21,7 @@ const Q1 = () => {
       />
 
       <Footer>
-        <Text style={{fontSize: 24}}>Slide to next Question </Text>``
+        <Text style={{fontSize: 24}}>Slide to next Question </Text>
       </Footer>
     </Container>
   );

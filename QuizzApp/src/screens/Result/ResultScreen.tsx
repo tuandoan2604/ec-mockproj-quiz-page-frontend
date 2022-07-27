@@ -1,6 +1,6 @@
-import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 // @ts-ignore
-import React, {useCallback} from 'react';
+import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import HeaderBack from '../../components/HeaderBack';
 import {
@@ -11,18 +11,14 @@ import {
   IC_TIME_DARK,
 } from '../../assets';
 import styled from 'styled-components/native';
-import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 
 const width = Dimensions.get('window').width;
 
 const ResultScreen = () => {
-  const navigation = useNavigation<any>();
-  const goToQuiz = useCallback(() => {
-    navigation.navigate('QuizScreen');
-  }, []);
-
+  // @ts-ignore
   const point = useSelector(state => state.Question.point);
+  // @ts-ignore
   const correct_answer = useSelector(state => state.Question.correct_answer);
 
   return (

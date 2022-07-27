@@ -27,7 +27,7 @@ const authSlice = createSlice({
 
   reducers: {
     LogOut: (state, action) => {
-      AsyncStorage.removeItem('token');
+      AsyncStorage.removeItem('access_token');
       return {
         ...state,
         isLogin: false,
@@ -40,6 +40,10 @@ const authSlice = createSlice({
     builder
       .addCase(fetchAsyncLogin.fulfilled, (state, action) => {
         const payload = action.payload;
+        const access_token = action.payload.tokens.access.token;
+        const refresh_token = action.payload.tokens.refresh.token;
+        AsyncStorage.setItem('access_token', JSON.stringify(access_token));
+        AsyncStorage.setItem('refresh_token', refresh_token);
         return {
           ...state,
           payload: payload,

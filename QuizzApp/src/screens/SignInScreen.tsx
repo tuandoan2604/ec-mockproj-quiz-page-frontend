@@ -8,15 +8,19 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
+  View,
   Alert,
   Text,
 } from 'react-native';
 import {IC_BACK_CIRCLE, IC_FB, IC_GG} from '../assets';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {fetchAsyncLogin} from '../store/slices/AuthSlice';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {isValidPassword} from '../utilities/Validation';
+import InputInfo from '../components/InputInfo';
+import {Formik} from 'formik';
+import axios from 'axios';
+import {baseURL} from '../config/api';
 
 const width = Dimensions.get('window').width;
 
@@ -27,20 +31,18 @@ const SignInScreen = () => {
     username: '',
     password: '',
   });
-  const [errorPassword, setErrorPassword] = useState('');
-
-  const isValidationOK = () => {
-    data.password.length > 0 && isValidPassword(data.password) == true;
-  };
 
   const handleShowPass = useCallback(() => {
     setShowPass(!showPass);
   }, [showPass]);
 
   const handleLogin = useCallback(() => {
+    // @ts-ignore
     return dispatch(fetchAsyncLogin(data)).then(response => {
       if (!response.error) {
         navigation.navigate('HomeScreen');
+      } else {
+        Alert.alert('Please check your email or password');
       }
     });
   }, [data]);
@@ -53,18 +55,15 @@ const SignInScreen = () => {
     navigation.goBack();
   }, []);
 
-  const onChangeUsername = useCallback(
-    val => {
-      setData({...data, username: val});
+  const onChangeText = useCallback(
+    (keyName: string, value: string) => {
+      setData({...data, [keyName]: value});
     },
     [data],
   );
 
   const onChangePassword = useCallback(
     val => {
-      setErrorPassword(
-        isValidPassword(val) == true ? '' : 'Check your password',
-      );
       setData({...data, password: val});
     },
     [data],
@@ -97,12 +96,57 @@ const SignInScreen = () => {
           </ButtonGG>
           <TextLoginOther>OR LOGIN WITH EMAIL</TextLoginOther>
         </ButtonSection>
+        {/* <Formik
+          initialValues={{data}}
+          onSubmit={value => console.log(value)}
+          validationSchema={SignupSchema}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <View>
+              <InputEmail>
+                <InputInfo
+                  title={'Username'}
+                  value={data.username}
+                  onChangeValue={onChangeText}
+                  keyName={'username'}
+                />
+                {errors.data?.username && touched.data?.username ? (
+                  // ? Alert.alert(errors.data.username)
+                  <Text>{errors.data.username}</Text>
+                ) : null}
+              </InputEmail>
 
+              <InputPassword>
+                <Password
+                  placeholder={'Password'}
+                  value={data.password}
+                  onChangeText={onChangePassword}
+                  secureTextEntry={showPass}
+                  placeholderTextColor={'gray'}
+                />
+                <ButtonShowPass onPress={handleShowPass}>
+                  <FontAwesome
+                    name={!showPass ? 'eye' : 'eye-slash'}
+                    size={18}
+                    color="black"
+                  />
+                </ButtonShowPass>
+              </InputPassword>
+            </View>
+          )}
+        </Formik> */}
         <InputEmail>
-          <Email
-            placeholder={'Username'}
+          <InputInfo
+            title={'Username'}
             value={data.username}
-            onChangeText={onChangeUsername}
+            onChangeValue={onChangeText}
+            keyName={'username'}
           />
         </InputEmail>
 
@@ -112,6 +156,7 @@ const SignInScreen = () => {
             value={data.password}
             onChangeText={onChangePassword}
             secureTextEntry={showPass}
+            placeholderTextColor={'gray'}
           />
           <ButtonShowPass onPress={handleShowPass}>
             <FontAwesome
@@ -121,7 +166,6 @@ const SignInScreen = () => {
             />
           </ButtonShowPass>
         </InputPassword>
-        <RequirementText>{errorPassword}</RequirementText>
 
         <ButtonLogin onPress={handleLogin}>
           <ButtonLoginText>LOG IN</ButtonLoginText>
