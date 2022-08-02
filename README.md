@@ -1,31 +1,46 @@
-# Quiz Page EC Frontend
+# Getting Started with Create React App and Redux
 
-## Project1 in EC, Please fork this repo and show us your development progress via a Pull Request.
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
-I, Requirements
+## Available Scripts
 
-	1. Support user registration function, login is required to perform the survey.
-	2. Once logged in, the first page displays the first question and the total number of questions to be
-		answered.
-	3. Click save and next to save the results and go to the next page, back to return to the previous
-		question (Optional: Support skip question).
-	4. Questions can choose 1 or more answers.
-	5. Show a list of selected questions and answers along with the correct answer and total score
-		after completing the survey.
-	6. Use Token Based Authentication with access token, refresh token.
-  
-II, Tools (Optional)
+In the project directory, you can run:
 
-	1. ReactJS, Redux
-	2. Middleware (Authen, Author, Validate data, Error Handle). Authen Author by JWT (Json Web Token)
-	3. Ant Design or MUI for Lib UI
-  
-III, API Endpoint
-  File Postman, add to Postman Web, App
-  
-IV, Write a concise README
-  1. How to run your code locally?
-  2. A sample “curl” command to call your API
-  3. How to run your unit tests locally?
-  4. What do you love about your solution?
-  5. What else do you want us to know about however you do not have enough time to complete?  
+### `npm start`
+
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+
+The page will reload when you make changes.\
+You may also see any lint errors in the console.
+
+### `npm test`
+
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+
+### `npm run build`
+
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
+
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
+
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `npm run eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+
+If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+
+You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
