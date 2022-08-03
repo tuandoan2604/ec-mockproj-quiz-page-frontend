@@ -1,11 +1,12 @@
-import {StyleSheet, TextInput, TextInputProps} from 'react-native';
+import {Dimensions, StyleSheet, TextInput, TextInputProps} from 'react-native';
 import React, {useCallback} from 'react';
-
 interface Props extends TextInputProps {
   title: string;
   keyName: string;
   onChangeValue: (keyName: string, title: string) => void;
 }
+
+const width = Dimensions.get('window').width;
 
 const InputInfo = (props: Props) => {
   const {title, keyName, onChangeValue, ...restProps} = props;
@@ -32,7 +33,7 @@ export default InputInfo;
 
 const styles = StyleSheet.create({
   inputValue: {
-    width: 360,
+    width: width - 22,
     height: 50,
     backgroundColor: '#fff',
     borderRadius: 38,

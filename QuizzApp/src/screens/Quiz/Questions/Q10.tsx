@@ -14,18 +14,18 @@ const Q10 = () => {
     navigation.navigate('ResultScreen');
   }, []);
 
-  const question = useSelector(state => state.Question.question[9]);
-  const id = question.id;
+  const question = useSelector(state => state.Question?.question[9]);
+  const id = question?.id;
 
   return (
     <Container>
-      <Question>{question.question}</Question>
+      <Question>{question?.question}</Question>
 
       <Answer
-        answer1={question.answer1}
-        answer2={question.answer2}
-        answer3={question.answer3}
-        answer4={question.answer4}
+        answer1={question?.answer1}
+        answer2={question?.answer2}
+        answer3={question?.answer3}
+        answer4={question?.answer4}
         id={id}
       />
 

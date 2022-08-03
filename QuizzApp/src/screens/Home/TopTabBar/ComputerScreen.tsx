@@ -9,9 +9,11 @@ import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {addQuestion} from '../../../store/slices/GetQuestionSlice';
 import {baseURL} from '../../../config/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const width = Dimensions.get('window').width;
 
+const numb = Math.floor(Math.random() * 5);
 const ComputerScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
@@ -20,9 +22,12 @@ const ComputerScreen = () => {
   const token = useSelector(state => state.Auth.payload.tokens.access.token);
   const [isSelected, setIsSelected] = useState(true);
 
-  const getQuestionData = useCallback(() => {
+  const getQuestionData = useCallback(async () => {
+    // const token = await AsyncStorage.getItem('access_token');
+    // console.log(token);
+
     axios
-      .get(baseURL + `/v1/questions?page=2&limit=10`, {
+      .get(baseURL + `/v1/questions?page=${numb}&limit=10`, {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then(response => {

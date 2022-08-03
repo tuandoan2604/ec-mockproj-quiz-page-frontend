@@ -1,33 +1,58 @@
-import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
-import {useSelector} from 'react-redux';
+import {Button, StyleSheet, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import axios from 'axios';
 import {baseURL} from '../../../config/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import bcryptjs from 'bcryptjs';
 
 const PopularScreen = () => {
+  const refreshToken = useSelector(
+    state => state.Auth.payload.tokens.refresh.token,
+  );
+  const token = useSelector(state => state.Auth.payload.tokens.access.token);
+  // const hashedToken = bcryptjs.hashSync(token, '$2a$10$CwTycUXWue0Thq9StjUM0u');
+  // console.log(hashedToken);
+  let hashedToken;
+  bcryptjs.genSalt(10, function (err, Salt) {
+    bcryptjs.hash(token, Salt, function (err, hash) {
+      if (err) {
+        return console.log('cannot encrpyt');
+      }
+      hashedToken = hash;
+      console.log('hashed token', hashedToken);
+    });
+
+    // bcryptjs.compare(token, hashedToken, async function (err, isMatch) {
+    //   if (isMatch) {
+    //     console.log('Encrypted password is: ', token);
+    //     console.log('Decrypted password is: ', hashedToken);
+    //   }
+    //   if (!isMatch) {
+    //     // If password doesn't match the following
+    //     // message will be sent
+    //     console.log(hashedToken + ' is not encryption of ' + token);
+    //   }
+    // });
+  });
+
   //call api refresh token to get new accesstoken
-  const getAccessUsingRefresh = () => {
-    const refreshToken = useSelector(
-      state => state.Auth.payload.tokens.refresh.token,
-    );
+  const getAccessUsingRefresh = useCallback(() => {
     axios
       .post(baseURL + `/v1/auth/refresh-tokens`, {
         refreshToken,
       })
       .then(res => {
         console.log('ref token', res.data);
-        AsyncStorage.setItem(
-          'access_token',
-          JSON.stringify(res.data.access.token),
-        );
+        AsyncStorage.setItem('access_token', res.data.access.token);
       });
-  };
+  }, []);
 
-  getAccessUsingRefresh();
+  const haitoken = AsyncStorage.getItem('access_token');
+
   return (
     <View style={{flex: 1}}>
-      <Text></Text>
+      <Button title="call token" onPress={getAccessUsingRefresh} />
     </View>
   );
 };

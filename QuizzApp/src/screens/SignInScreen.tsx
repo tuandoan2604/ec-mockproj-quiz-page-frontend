@@ -8,25 +8,26 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Platform,
-  View,
   Alert,
+  View,
   Text,
 } from 'react-native';
 import {IC_BACK_CIRCLE, IC_FB, IC_GG} from '../assets';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {fetchAsyncLogin} from '../store/slices/AuthSlice';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import InputInfo from '../components/InputInfo';
 import {Formik} from 'formik';
-import axios from 'axios';
-import {baseURL} from '../config/api';
+import * as Yup from 'yup';
+import {isValidPassword} from '../utilities/Validation';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const width = Dimensions.get('window').width;
 
 const SignInScreen = () => {
   const [showPass, setShowPass] = useState(true);
   const dispatch = useDispatch();
+  const [errorPassword, setErrorPassword] = useState('');
   const [data, setData] = useState({
     username: '',
     password: '',
@@ -64,10 +65,25 @@ const SignInScreen = () => {
 
   const onChangePassword = useCallback(
     val => {
+      setErrorPassword(
+        isValidPassword(val) === true
+          ? ''
+          : 'Password must have min 8 characters',
+      );
       setData({...data, password: val});
     },
     [data],
   );
+
+  const SignupSchema = Yup.object().shape({
+    username: Yup.string()
+      .required('Username is required')
+      .min(5, 'Username must have min 5 characters')
+      .max(10, 'Username have max 10 characters'),
+    password: Yup.string()
+      .min(8, ({min}) => `Password must be at least ${min} characters`)
+      .required('Password is required'),
+  });
 
   return (
     <KeyboardAvoidingView
@@ -80,11 +96,9 @@ const SignInScreen = () => {
             style={{marginTop: 42, marginLeft: 12}}
           />
         </ButtonBack>
-
         <TitleSection>
           <Title>Welcome Back</Title>
         </TitleSection>
-
         <ButtonSection>
           <ButtonFB>
             <Image source={IC_FB} />
@@ -96,18 +110,14 @@ const SignInScreen = () => {
           </ButtonGG>
           <TextLoginOther>OR LOGIN WITH EMAIL</TextLoginOther>
         </ButtonSection>
-        {/* <Formik
-          initialValues={{data}}
+        <Formik
+          initialValues={{
+            username: '',
+            password: '',
+          }}
           onSubmit={value => console.log(value)}
           validationSchema={SignupSchema}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            touched,
-          }) => (
+          {({errors, touched}) => (
             <View>
               <InputEmail>
                 <InputInfo
@@ -116,11 +126,12 @@ const SignInScreen = () => {
                   onChangeValue={onChangeText}
                   keyName={'username'}
                 />
-                {errors.data?.username && touched.data?.username ? (
-                  // ? Alert.alert(errors.data.username)
-                  <Text>{errors.data.username}</Text>
-                ) : null}
               </InputEmail>
+              {errors.username && touched.username ? (
+                <Text style={{color: 'red', fontSize: 12}}>
+                  hello,{errors.username}
+                </Text>
+              ) : null}
 
               <InputPassword>
                 <Password
@@ -138,43 +149,17 @@ const SignInScreen = () => {
                   />
                 </ButtonShowPass>
               </InputPassword>
+              <Text style={styles.errorPassword}>{errorPassword}</Text>
+              <ButtonLogin onPress={handleLogin}>
+                <ButtonLoginText>LOG IN</ButtonLoginText>
+              </ButtonLogin>
             </View>
           )}
-        </Formik> */}
-        <InputEmail>
-          <InputInfo
-            title={'Username'}
-            value={data.username}
-            onChangeValue={onChangeText}
-            keyName={'username'}
-          />
-        </InputEmail>
-
-        <InputPassword>
-          <Password
-            placeholder={'Password'}
-            value={data.password}
-            onChangeText={onChangePassword}
-            secureTextEntry={showPass}
-            placeholderTextColor={'gray'}
-          />
-          <ButtonShowPass onPress={handleShowPass}>
-            <FontAwesome
-              name={!showPass ? 'eye' : 'eye-slash'}
-              size={18}
-              color="black"
-            />
-          </ButtonShowPass>
-        </InputPassword>
-
-        <ButtonLogin onPress={handleLogin}>
-          <ButtonLoginText>LOG IN</ButtonLoginText>
-        </ButtonLogin>
+        </Formik>
 
         <ButtonForgotPW>
           <TextForgotPW>Forgot Password?</TextForgotPW>
         </ButtonForgotPW>
-
         <RemainingView>
           <TextNotLogin>DON’T HAVE AN ACCOUNT? </TextNotLogin>
           <TextRegister>SIGN UP</TextRegister>
@@ -190,11 +175,13 @@ const styles = StyleSheet.create({
   background: {
     flex: 1,
   },
+  errorPassword: {
+    fontSize: 12,
+    marginLeft: 22,
+    color: '#fff',
+    marginTop: 5,
+  },
 });
-
-const Container = styled.View`
-  flex: 1;
-`;
 
 const ButtonBack = styled.TouchableOpacity``;
 
@@ -250,7 +237,7 @@ const InputEmail = styled.View`
 `;
 
 const InputPassword = styled.View`
-  width: 360px;
+  width: ${width - 22}px;
   height: 50px;
   background-color: white;
   border-radius: 38px;
@@ -262,16 +249,6 @@ const InputPassword = styled.View`
 
 const ButtonShowPass = styled.TouchableOpacity`
   margin-right: 12px;
-`;
-
-const Email = styled.TextInput`
-  width: 360px;
-  height: 50px;
-  background-color: white;
-  border-radius: 38px;
-  flex: auto;
-  margin-top: 30px;
-  padding: 10px;
 `;
 
 const Password = styled.TextInput`

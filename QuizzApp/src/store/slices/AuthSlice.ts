@@ -10,14 +10,6 @@ export const fetchAsyncLogin = createAsyncThunk(
   },
 );
 
-// export const fetchAsyncRegister = createAsyncThunk(
-//   'auth/fetchAsyncRegister',
-//   async (data: any, thunkAPI) => {
-//     const response = await AuthService.register(data);
-//     return response.data;
-//   },
-// );
-
 const authSlice = createSlice({
   name: 'Auth',
   initialState: {
@@ -42,8 +34,11 @@ const authSlice = createSlice({
         const payload = action.payload;
         const access_token = action.payload.tokens.access.token;
         const refresh_token = action.payload.tokens.refresh.token;
+        const expires = action.payload.tokens.access.expires;
         AsyncStorage.setItem('access_token', JSON.stringify(access_token));
         AsyncStorage.setItem('refresh_token', refresh_token);
+        AsyncStorage.setItem('expires', expires);
+        //mã hoá sau khi async str, dùng keychain
         return {
           ...state,
           payload: payload,

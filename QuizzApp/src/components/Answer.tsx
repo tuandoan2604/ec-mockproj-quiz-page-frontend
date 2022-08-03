@@ -20,7 +20,7 @@ const Answer = (prop: Props) => {
   const [isSelect2, setIsSelect2] = useState(true);
   const [isSelect3, setIsSelect3] = useState(true);
   const [isSelect4, setIsSelect4] = useState(true);
-  const token = useSelector(state => state.Auth.payload.tokens.access.token);
+  // const token = useSelector(state => state.Auth.payload.tokens.access.token);
 
   const getToken = async () => {
     try {
@@ -33,12 +33,13 @@ const Answer = (prop: Props) => {
     }
   };
 
-  // const token = getToken().then(thing => thing);
-  // console.log(token);
-
   const dispatch = useDispatch();
+
   // lưu đáp án vào reudx
-  const SubmitAnswer1 = useCallback(() => {
+  const SubmitAnswer1 = useCallback(async () => {
+    const token = await AsyncStorage.getItem('access_token');
+    console.log(token);
+
     axios
       .post(
         baseURL + `/v1/questions/submit`,
@@ -66,7 +67,9 @@ const Answer = (prop: Props) => {
       });
   }, []);
 
-  const SubmitAnswer2 = useCallback(() => {
+  const SubmitAnswer2 = useCallback(async () => {
+    const token = await AsyncStorage.getItem('access_token');
+    console.log(token);
     axios
       .post(
         baseURL + `/v1/questions/submit`,
@@ -94,7 +97,9 @@ const Answer = (prop: Props) => {
       });
   }, []);
 
-  const SubmitAnswer3 = useCallback(() => {
+  const SubmitAnswer3 = useCallback(async () => {
+    const token = await AsyncStorage.getItem('access_token');
+    console.log(token);
     axios
       .post(
         baseURL + `/v1/questions/submit`,
@@ -122,7 +127,9 @@ const Answer = (prop: Props) => {
       });
   }, []);
 
-  const SubmitAnswer4 = useCallback(() => {
+  const SubmitAnswer4 = useCallback(async () => {
+    const token = await AsyncStorage.getItem('access_token');
+    console.log(token);
     axios
       .post(
         baseURL + `/v1/questions/submit`,
