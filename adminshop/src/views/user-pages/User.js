@@ -17,6 +17,8 @@ import Cart from './cart/Cart'
 
 import { decryptData } from '../../util/util'
 
+import { useDispatch, useSelector } from 'react-redux'
+
 const { Header, Content, Footer } = Layout
 const { Search } = Input
 
@@ -32,14 +34,14 @@ export default function User() {
   useEffect(() => {
     if (encryptedUser !== null) {
       const salt = process.env.REACT_APP_SALT
-      console.log(encryptedUser)
       const decryptedUser = decryptData(encryptedUser, salt)
       setUser({ ...decryptedUser })
     }
   }, [encryptedUser])
 
   //cart
-  const showCart = () => {
+
+  const handleShowCart = () => {
     setIsShowCart(true)
   }
   const handleViewCart = () => {
@@ -101,7 +103,7 @@ export default function User() {
             background: '#001529',
             border: 0,
           }}
-          onClick={showCart}
+          onClick={handleShowCart}
         />
         <Modal
           visible={isShowCart}

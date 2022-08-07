@@ -1,14 +1,21 @@
 import { Card, Button, message } from 'antd'
 import { ShoppingCartOutlined } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+
+import { addToCart } from '../../../../redux/actions/cart'
 const { Meta } = Card
 
 export default function CardItem(props) {
-  const { name, countInStock, price } = props.product
+  const dispatch = useDispatch()
+
+  const { name, countInStock, price, id } = props.product
 
   const handleAddToCart = () => {
     if (props.isLogin) {
-      console.log('add to cart')
+      dispatch(
+        addToCart({ product: name, productId: id, price: price, quantity: 1 })
+      )
     } else {
       message.error('Please login first!')
     }
