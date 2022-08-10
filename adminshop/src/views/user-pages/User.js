@@ -27,17 +27,18 @@ export default function User() {
   const [isShowCart, setIsShowCart] = useState(false)
   const [isShowSigninModal, setIsShowSigninModal] = useState(false)
   const [isShowSignupModal, setIsShowSignupModal] = useState(false)
-  const [user, setUser] = useState({})
+  const [user, setUser] = useState()
 
   let encryptedUser = localStorage.getItem('user')
+  let reduxUser = useSelector((state) => state?.auth.user)
 
   useEffect(() => {
     if (encryptedUser !== null) {
       const salt = process.env.REACT_APP_SALT
       const decryptedUser = decryptData(encryptedUser, salt)
-      setUser({ ...decryptedUser })
+      setUser(decryptedUser)
     }
-  }, [encryptedUser])
+  }, [reduxUser, encryptedUser])
 
   //cart
 
@@ -124,7 +125,7 @@ export default function User() {
           <p>Shipping</p>
           <p>Total</p>
         </Modal>
-        {encryptedUser !== null ? (
+        {user?.username ? (
           <Button
             icon={<SmileOutlined style={{ fontSize: '20px' }} />}
             style={{
@@ -133,7 +134,7 @@ export default function User() {
             }}
             onClick={handleShowAccount}
           >
-            {user.username}
+            {user?.username}
           </Button>
         ) : (
           <Button
@@ -180,8 +181,17 @@ export default function User() {
         >
           <Routes>
             <Route path="" element={<ListItems />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="my-account" element={<MyAccount />} />
+            {user?.username ? (
+              <>
+                <Route path="cart" element={<Cart />} />
+                <Route
+                  path="my-account"
+                  element={<MyAccount setUser={setUser} />}
+                />
+              </>
+            ) : (
+              <Route path="*" element={<h1>Please Login First !</h1>} />
+            )}
           </Routes>
         </div>
       </Content>

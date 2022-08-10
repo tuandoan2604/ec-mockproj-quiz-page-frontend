@@ -11,7 +11,6 @@ API.interceptors.request.use(async (config) => {
   console.log('request interceptors!')
   if (localStorage.getItem('tokens')) {
     let decryptedTokens = decryptData(localStorage.getItem('tokens'), salt)
-    let decryptedDeviceId = decryptData(localStorage.getItem('deviceId'), salt)
 
     const expire = Number(new Date(decryptedTokens.access.expires))
     const current = Number(new Date())
@@ -20,7 +19,7 @@ API.interceptors.request.use(async (config) => {
       let refreshToken = decryptedTokens.refresh.token
       const res = await axios.post(
         'http://139.59.103.50:5000/v1/auth/refresh-tokens',
-        { refreshToken, deviceId: decryptedDeviceId }
+        { refreshToken, deviceId: 'deviceId-hieu1x@gmail.com' }
       )
 
       const encryptedTokens = encryptData(res.data)

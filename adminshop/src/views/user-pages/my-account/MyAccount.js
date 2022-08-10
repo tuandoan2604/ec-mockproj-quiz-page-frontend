@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux'
 import { logout } from '../../../redux/actions/auth'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { decryptData } from '../../../util/util'
 
-export default function MyAccount() {
+export default function MyAccount({ setUser }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const refreshToken = useSelector(
@@ -20,9 +21,13 @@ export default function MyAccount() {
 
     if (deviceId.length > 0) {
       const reqData = { refreshToken, deviceId }
-
+      setUser(null)
       dispatch(logout(reqData, navigate))
     }
+  }
+
+  const handleAdminSite = () => {
+    navigate('/admin/dashboard', { replace: true })
   }
   return (
     <>
@@ -42,7 +47,7 @@ export default function MyAccount() {
             minHeight: '400px',
           }}
         >
-          <a>My Profile</a>
+          <a onClick={handleAdminSite}>Admin site</a>
           <a>Order History</a>
           <a onClick={handleLogout}>Logout</a>
         </div>

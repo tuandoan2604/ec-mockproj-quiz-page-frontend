@@ -18,7 +18,7 @@ export default function SigninForm(props) {
       const formData = {
         email: values.email,
         password: values.password,
-        deviceId: values.email,
+        deviceId: 'deviceId-hieu1x@gmail.com',
       }
       dispatch(signin(formData))
     },

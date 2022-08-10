@@ -1,5 +1,5 @@
 import './Admin.css'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   MedicineBoxOutlined,
   ShoppingCartOutlined,
@@ -11,6 +11,7 @@ import { Breadcrumb, Layout, Menu } from 'antd'
 import { Button } from 'antd'
 import { Route, Routes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { decryptData } from '../../util/util'
 
 import ProductList from './productList/ProductList'
 import AddProduct from './addProduct/AddProduct'
@@ -18,6 +19,7 @@ import UserList from './userList/UserList'
 import AddUser from './addUser/AddUser'
 import Orders from './orders/Orders'
 import Dashboard from './dashboard/Dashboard'
+import AuthPage from './authPage/AuthPage'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -36,7 +38,7 @@ export default function Admin() {
   }
   const items = [
     getItem('Dashboard', '1', <WindowsOutlined />, null, () =>
-      navigate('/admin/', { replace: true })
+      navigate('/admin/dashboard', { replace: true })
     ),
     getItem('Product', '2', <MedicineBoxOutlined />, [
       getItem('Product List', '3', null, null, () =>
@@ -111,7 +113,7 @@ export default function Admin() {
             }}
           >
             <Routes>
-              <Route path="" element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
               <Route path="product-list" element={<ProductList />} />
               <Route path="add-product" element={<AddProduct />} />
               <Route path="user-list" element={<UserList />} />
