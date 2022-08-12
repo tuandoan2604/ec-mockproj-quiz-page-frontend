@@ -57,7 +57,7 @@ export default function SigninForm(props) {
         <Input
           id="email"
           name="email"
-          value={formik?.value?.email}
+          value={formik?.values?.email}
           onChange={formik.handleChange}
           placeholder="Email@gmail.com"
         />
@@ -65,7 +65,7 @@ export default function SigninForm(props) {
         <Input.Password
           id="password"
           name="password"
-          value={formik?.value?.password}
+          value={formik?.values?.password}
           onChange={formik.handleChange}
           style={{ marginTop: 20 }}
           placeholder="Password"

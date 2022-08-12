@@ -4,6 +4,8 @@ import User from './views/user-pages/User'
 import { useEffect, useState } from 'react'
 import { decryptData } from './util/util'
 
+import { useSelector } from 'react-redux'
+
 import 'antd/dist/antd.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './views/admin-pages/authPage/AuthPage'
@@ -11,19 +13,17 @@ import AuthPage from './views/admin-pages/authPage/AuthPage'
 function App() {
   const [admin, setAdmin] = useState()
   let encryptedUser = localStorage.getItem('user')
+  let reduxUser = useSelector((state) => state?.auth.user)
   useEffect(() => {
     console.log(encryptedUser)
-    if (encryptedUser?.length > 0) {
+    if (encryptedUser !== null) {
       const salt = process.env.REACT_APP_SALT
-      console.log(salt)
-
       let decryptedUser = decryptData(encryptedUser, salt)
-      console.log(decryptedUser)
       if (decryptedUser.role === 'admin') {
         setAdmin(decryptedUser)
       }
     }
-  }, [encryptedUser])
+  }, [encryptedUser, reduxUser])
   return (
     <div className="App">
       <BrowserRouter>

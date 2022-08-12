@@ -4,7 +4,7 @@ import { List, Spin } from 'antd'
 
 import { useSelector, useDispatch } from 'react-redux'
 
-import { getProducts } from '../../../redux/actions/getProducts'
+import { getProducts } from '../../../redux/actions/product'
 
 export default function ListItems() {
   const dispatch = useDispatch()

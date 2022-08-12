@@ -20,6 +20,7 @@ import AddUser from './addUser/AddUser'
 import Orders from './orders/Orders'
 import Dashboard from './dashboard/Dashboard'
 import AuthPage from './authPage/AuthPage'
+import EditProduct from './editProduct/EditProduct'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -116,6 +117,7 @@ export default function Admin() {
               <Route path="dashboard" element={<Dashboard />} />
               <Route path="product-list" element={<ProductList />} />
               <Route path="add-product" element={<AddProduct />} />
+              <Route path="edit-product" element={<EditProduct />} />
               <Route path="user-list" element={<UserList />} />
               <Route path="add-user" element={<AddUser />} />
               <Route path="orders" element={<Orders />} />
