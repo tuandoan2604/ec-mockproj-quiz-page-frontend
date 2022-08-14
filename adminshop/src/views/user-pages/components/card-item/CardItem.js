@@ -8,8 +8,8 @@ const { Meta } = Card
 
 export default function CardItem(props) {
   const dispatch = useDispatch()
-
-  const { name, countInStock, price, id } = props.product
+  console.log(props)
+  const { name, countInStock, price, id, images } = props.product
 
   const handleAddToCart = () => {
     if (props.isLogin) {
@@ -28,8 +28,9 @@ export default function CardItem(props) {
       }}
       cover={
         <img
+          style={{ height: '200px', objectFit: 'cover' }}
           alt="example"
-          src="https://sneakerbardetroit.com/wp-content/uploads/2017/03/nike-kyrie-3-cool-grey-anthracite-polar-blue.jpg"
+          src={images[0].url}
         />
       }
     >

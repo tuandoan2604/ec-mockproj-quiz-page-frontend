@@ -6,7 +6,7 @@ import { decryptData } from './util/util'
 
 import { useSelector } from 'react-redux'
 
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.min.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AuthPage from './views/admin-pages/authPage/AuthPage'
 

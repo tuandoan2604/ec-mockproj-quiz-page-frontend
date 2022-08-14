@@ -1,15 +1,12 @@
 import React from 'react'
 import { Button, Card } from 'antd'
-import { Input, Upload, Select } from 'antd'
-import { PlusOutlined } from '@ant-design/icons'
+import { Input } from 'antd'
 import { useLocation } from 'react-router-dom'
 
 import { useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux/es/exports'
 import { editProduct } from '../../../redux/actions/product'
-
-const { Option } = Select
 
 export default function EditProduct() {
   const editItem = useLocation().state

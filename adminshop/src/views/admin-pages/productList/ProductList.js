@@ -1,28 +1,42 @@
-import { Table } from 'antd'
-import { Button } from 'antd'
+import { Table, Button, Modal } from 'antd'
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 
 import { getProducts } from '../../../redux/actions/product'
+import { deleteProduct } from '../../../redux/actions/product'
 
 const onChange = (pagination, filters, sorter, extra) => {}
 
 export default function ProductList() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [isShowWarning, setIsShowWarning] = useState(false)
+  const [currentId, setCurrentId] = useState(0)
+
+  let products = useSelector((state) => state?.product.products)
+  console.log(products)
+  const handleShowDelete = (id) => {
+    setCurrentId(id)
+    setIsShowWarning(true)
+  }
+
+  const handleCancel = () => {
+    setIsShowWarning(false)
+  }
   useEffect(() => {
     dispatch(getProducts())
-  }, [])
+  }, [dispatch])
 
-  const products = useSelector((state) => state?.product.products)
+  const handleDelete = () => {
+    handleCancel()
+    dispatch(deleteProduct(currentId, setCurrentId))
+  }
 
   console.log(products)
-
   const data = products.map((item, index) => {
-    console.log(item)
     return {
       key: index,
       id: item.id,
@@ -74,24 +88,49 @@ export default function ProductList() {
       title: '',
       dataIndex: '',
       key: 'addToCart',
-      render: (data) => (
+      render: (item) => (
         <>
           {' '}
           <Button
             icon={<EditOutlined />}
             onClick={() =>
               navigate('/admin/edit-product', {
-                state: data,
+                state: item,
                 replace: true,
               })
             }
           />
-          <Button icon={<DeleteOutlined />} />
+          <Button
+            icon={
+              <DeleteOutlined
+                onClick={() => {
+                  handleShowDelete(item.id)
+                }}
+              />
+            }
+          />
         </>
       ),
     },
   ]
 
-  console.log(data)
-  return <Table columns={columns} dataSource={data} onChange={onChange} />
+  return (
+    <>
+      <Table columns={columns} dataSource={data} onChange={onChange} />
+      <Modal
+        visible={isShowWarning}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="signin" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button key="signup" type="danger" onClick={handleDelete}>
+            Delete
+          </Button>,
+        ]}
+      >
+        Are you sure to delete product #{currentId}
+      </Modal>
+    </>
+  )
 }

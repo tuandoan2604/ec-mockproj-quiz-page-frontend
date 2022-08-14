@@ -39,6 +39,9 @@ export const signIn = (formData) => API.post('/v1/auth/login', formData)
 export const logOut = (reqData) => API.post('/v1/auth/logout', reqData)
 
 export const getProducts = () => API.get('/v1/products?category=Shoes')
-export const updateProduct = (data, id) => API.patch(`/v1/products/${id}`, data)
+export const updateProduct = (formData, id) =>
+  API.patch(`/v1/products/${id}`, formData)
+export const deleteProductById = (id) => API.delete(`/v1/products/${id}`)
+export const createProduct = (formData) => API.post(`/v1/products`, formData)
 
 export const createCart = (cart) => API.post('/v1/cart', cart)

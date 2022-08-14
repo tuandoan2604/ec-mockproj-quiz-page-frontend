@@ -11,8 +11,13 @@ export const productSlice = createSlice({
     fetchProduct: (state, action) => {
       state.products = action.payload.data.result
     },
+    deleteReduxProduct: (state, action) => {
+      state.products = state.products.filter(
+        (product) => product !== action.payload
+      )
+    },
   },
 })
 
-export const { fetchProduct } = productSlice.actions
+export const { fetchProduct, deleteReduxProduct } = productSlice.actions
 export default productSlice.reducer
