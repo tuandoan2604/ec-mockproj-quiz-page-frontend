@@ -30,8 +30,6 @@ export default function AddProduct() {
     },
     onSubmit: (values) => {
       if (values.imageUrls.length > 0) {
-        message.success('Successfully create product!')
-        console.log(values)
         dispatch(createItem(values, navigate))
       } else {
         message.error('Please upload images first!')

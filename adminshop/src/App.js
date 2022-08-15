@@ -15,7 +15,6 @@ function App() {
   let encryptedUser = localStorage.getItem('user')
   let reduxUser = useSelector((state) => state?.auth.user)
   useEffect(() => {
-    console.log(encryptedUser)
     if (encryptedUser !== null) {
       const salt = process.env.REACT_APP_SALT
       let decryptedUser = decryptData(encryptedUser, salt)

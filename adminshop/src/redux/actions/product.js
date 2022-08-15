@@ -27,8 +27,8 @@ export const editProduct =
 
 export const deleteProduct = (productId) => async (dispatch) => {
   try {
-    const { data } = await api.deleteProductById(productId)
-    console.log(data)
+    const { data } = await api.deleteProduct(productId)
+
     if (data.message === 'Delete product success') {
       dispatch(deleteReduxProduct(productId))
       message.success('Successfully delete product!')
@@ -42,11 +42,11 @@ export const createItem = (formData, navigate) => async (dispatch) => {
   try {
     console.log(formData)
     const { data } = await api.createProduct(formData)
-    console.log(data)
-    // if (data.message === 'Delete product success') {
-    //   dispatch(deleteReduxProduct(productId))
-    //   message.success('Successfully delete product!')
-    // }
+
+    if (data.message === 'Create Product Success') {
+      message.success('Successfully create product!')
+      navigate('/admin/product-list', { replace: true })
+    }
   } catch (error) {
     console.log(error.message)
   }

@@ -13,7 +13,7 @@ export const productSlice = createSlice({
     },
     deleteReduxProduct: (state, action) => {
       state.products = state.products.filter(
-        (product) => product !== action.payload
+        (product) => product.id !== action.payload
       )
     },
   },

@@ -17,7 +17,6 @@ export default function ProductList() {
   const [currentId, setCurrentId] = useState(0)
 
   let products = useSelector((state) => state?.product.products)
-  console.log(products)
   const handleShowDelete = (id) => {
     setCurrentId(id)
     setIsShowWarning(true)
@@ -32,11 +31,10 @@ export default function ProductList() {
 
   const handleDelete = () => {
     handleCancel()
-    dispatch(deleteProduct(currentId, setCurrentId))
+    dispatch(deleteProduct(currentId))
   }
 
-  console.log(products)
-  const data = products.map((item, index) => {
+  let data = products.map((item, index) => {
     return {
       key: index,
       id: item.id,
@@ -53,6 +51,7 @@ export default function ProductList() {
     {
       title: 'ID',
       dataIndex: 'id',
+      sorter: (a, b) => a.id - b.id,
     },
     {
       title: 'Product',
@@ -87,10 +86,9 @@ export default function ProductList() {
     {
       title: '',
       dataIndex: '',
-      key: 'addToCart',
+      key: 'functionality',
       render: (item) => (
         <>
-          {' '}
           <Button
             icon={<EditOutlined />}
             onClick={() =>

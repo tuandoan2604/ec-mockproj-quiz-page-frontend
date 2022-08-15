@@ -11,7 +11,11 @@ import { Breadcrumb, Layout, Menu } from 'antd'
 import { Button } from 'antd'
 import { Route, Routes } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
-import { decryptData } from '../../util/util'
+
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+
+import { logout } from '../../redux/actions/auth'
 
 import ProductList from './productList/ProductList'
 import AddProduct from './addProduct/AddProduct'
@@ -27,7 +31,24 @@ const { Header, Content, Footer, Sider } = Layout
 export default function Admin() {
   const [collapsed, setCollapsed] = useState(false)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  let refreshToken = useSelector((state) => state?.auth?.tokens?.refresh?.token)
+  let deviceId = useSelector((state) => state?.auth?.deviceId)
   // menu data
+  const handleLogout = () => {
+    console.log(refreshToken)
+
+    localStorage.clear()
+
+    if (deviceId.length > 0) {
+      const reqData = { refreshToken, deviceId }
+      console.log(reqData)
+      dispatch(logout(reqData, navigate))
+    }
+  }
+  const handleToUserPage = () => {
+    navigate('/', { replace: true })
+  }
   const getItem = (label, key, icon, children, onClick) => {
     return {
       key,
@@ -90,8 +111,12 @@ export default function Admin() {
           }}
         >
           <div className="header-btn">
-            <Button className="sign">Sign In</Button>
-            <Button className="sign">Sign Up</Button>
+            <Button className="sign" onClick={handleToUserPage}>
+              Go to User page
+            </Button>
+            <Button className="sign" onClick={handleLogout}>
+              Logout
+            </Button>
           </div>
         </Header>
         <Content

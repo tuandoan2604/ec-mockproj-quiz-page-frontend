@@ -4,6 +4,8 @@ import { Button, Input } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
+import { signin } from '../../../redux/actions/auth'
+
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
@@ -14,11 +16,16 @@ export default function SignIn() {
 
   const formik = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
     onSubmit: (values) => {
-      console.log(values)
+      const formData = {
+        email: values.email,
+        password: values.password,
+        deviceId: 'deviceId-hieu1x@gmail.com',
+      }
+      dispatch(signin(formData))
     },
     validationSchema: Yup.object({
       email: Yup.string()
@@ -58,7 +65,7 @@ export default function SignIn() {
             textAlign: 'center',
           }}
         >
-          WELCOME BACK! ADMIN
+          WELCOME BACK! Please login as Admin
         </div>
         <form
           onSubmit={formik.handleSubmit}

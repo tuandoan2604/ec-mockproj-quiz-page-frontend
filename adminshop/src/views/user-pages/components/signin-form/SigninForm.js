@@ -10,7 +10,7 @@ export default function SigninForm(props) {
   const { isShowSigninModal, handleCancel, handleToggle, setIsShow } = props
   const formik = useFormik({
     initialValues: {
-      username: '',
+      email: '',
       password: '',
     },
     onSubmit: (values) => {

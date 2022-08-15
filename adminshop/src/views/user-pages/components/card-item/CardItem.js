@@ -8,13 +8,18 @@ const { Meta } = Card
 
 export default function CardItem(props) {
   const dispatch = useDispatch()
-  console.log(props)
   const { name, countInStock, price, id, images } = props.product
 
   const handleAddToCart = () => {
     if (props.isLogin) {
       dispatch(
-        addToCart({ product: name, productId: id, price: price, quantity: 1 })
+        addToCart({
+          product: name,
+          productId: id,
+          price: price,
+          quantity: 1,
+          image: images[0].url,
+        })
       )
     } else {
       message.error('Please login first!')

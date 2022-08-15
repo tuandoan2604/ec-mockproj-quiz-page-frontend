@@ -22,6 +22,7 @@ export default function Cart() {
       price: product.price,
       quantity: { quantity: product.quantity, productId: product.productId },
       total: `$${product.quantity * product.price}`,
+      image: product.image,
     }
   })
 
@@ -65,10 +66,10 @@ export default function Cart() {
     {
       title: 'Image',
       dataIndex: 'image',
-      render: () => (
+      render: (url) => (
         <img
           style={{ width: 120, height: 120, objectFit: 'cover' }}
-          src="https://sneakerbardetroit.com/wp-content/uploads/2017/03/nike-kyrie-3-cool-grey-anthracite-polar-blue.jpg"
+          src={url}
           alt="img"
         />
       ),

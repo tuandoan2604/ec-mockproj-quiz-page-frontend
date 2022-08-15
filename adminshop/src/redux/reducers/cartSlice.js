@@ -10,6 +10,7 @@ export const productSlice = createSlice({
   reducers: {
     addProduct: (state, action) => {
       const recentAddedProduct = action.payload
+      console.log(recentAddedProduct)
       const dupItem = state.addedProducts.filter(
         (item) => item.productId === recentAddedProduct.productId
       )
